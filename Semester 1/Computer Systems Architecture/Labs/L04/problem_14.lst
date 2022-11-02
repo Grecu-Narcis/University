@@ -1,0 +1,51 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  import exit msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data:
+     9 00000000 2F471A97                    a dd 10010111000110100100011100101111b
+    10 00000004 F2A54DB0                    b dd 10110000010011011010010111110010b
+    11                                      
+    12                                      ;    10011011010010111110010000000000b
+    13 00000008 00                          c db 0
+    14                                      
+    15                                  ;Given the doubleword A, obtain the integer number n represented on the bits 14-17 of A. 
+    16                                  ;Then obtain the doubleword B by rotating A n positions to the left. 
+    17                                  ;Finally, obtain the byte C as follows:
+    18                                  ;the bits 0-5 of C are the same as the bits 1-6 of B
+    19                                  ;the bits 6-7 of C are the same as the bits 17-18 of B
+    20                                      
+    21                                  segment code use32 class=code:
+    22                                  start:
+    23 00000000 A1[00000000]                mov eax, [a]
+    24 00000005 2500C00300                  and eax, 111100000000000000b
+    25 0000000A C1E80E                      shr eax, 14
+    26                                      
+    27 0000000D 88C1                        mov cl, al
+    28                                      
+    29 0000000F 8B1D[04000000]              mov ebx, [b]
+    30 00000015 D3E3                        shl ebx, cl
+    31                                      
+    32 00000017 89D8                        mov eax, ebx
+    33                                      
+    34 00000019 83E07E                      and eax, 1111110b
+    35 0000001C D1E8                        shr eax, 1
+    36                                      
+    37 0000001E 0805[08000000]              or [c], al
+    38                                      
+    39 00000024 89D8                        mov eax, ebx
+    40                                      
+    41 00000026 2500000600                  and eax, 1100000000000000000b
+    42 0000002B C1E80B                      shr eax, 11
+    43                                      
+    44 0000002E 0805[08000000]              or [c], al
+    45                                      
+    46 00000034 8A15[08000000]              mov dl, [c] ; 01000000b
+    47                                      
+    48 0000003A 6A00                        push dword 0
+    49                                      
+    50 0000003C FF15[00000000]              call [exit]
+    51                                      
