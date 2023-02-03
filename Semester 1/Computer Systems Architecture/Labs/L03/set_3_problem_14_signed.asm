@@ -15,7 +15,7 @@ segment data use32 class=data:
     
 segment code use32 class=code:
 start:
-    mov al, [a]
+    mov byte [a], 500
     cbw ; ax = a
     
     imul word[b] ; dx:ax = a*b
