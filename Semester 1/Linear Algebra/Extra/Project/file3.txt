@@ -1,0 +1,454 @@
+The number of associative operations on a set A = {a1, . . . , a3} is 113!
+The laws are: 
+a1 a1 a1 
+a1 a1 a1 
+a1 a1 a1 
+
+a1 a1 a1 
+a1 a1 a1 
+a1 a1 a2 
+
+a1 a1 a1 
+a1 a1 a1 
+a1 a1 a3 
+
+a1 a1 a1 
+a1 a1 a1 
+a1 a2 a3 
+
+a1 a1 a1 
+a1 a1 a1 
+a3 a3 a3 
+
+a1 a1 a1 
+a1 a1 a2 
+a1 a1 a3 
+
+a1 a1 a1 
+a1 a1 a2 
+a1 a2 a3 
+
+a1 a1 a1 
+a1 a2 a1 
+a1 a1 a1 
+
+a1 a1 a1 
+a1 a2 a1 
+a1 a1 a3 
+
+a1 a1 a1 
+a1 a2 a1 
+a1 a3 a1 
+
+a1 a1 a1 
+a1 a2 a1 
+a3 a3 a3 
+
+a1 a1 a1 
+a1 a2 a2 
+a1 a2 a2 
+
+a1 a1 a1 
+a1 a2 a2 
+a1 a2 a3 
+
+a1 a1 a1 
+a1 a2 a2 
+a1 a3 a3 
+
+a1 a1 a1 
+a1 a2 a3 
+a1 a1 a1 
+
+a1 a1 a1 
+a1 a2 a3 
+a1 a2 a3 
+
+a1 a1 a1 
+a1 a2 a3 
+a1 a3 a1 
+
+a1 a1 a1 
+a1 a2 a3 
+a1 a3 a2 
+
+a1 a1 a1 
+a1 a2 a3 
+a1 a3 a3 
+
+a1 a1 a1 
+a1 a2 a3 
+a3 a3 a3 
+
+a1 a1 a1 
+a1 a3 a1 
+a1 a1 a1 
+
+a1 a1 a1 
+a1 a3 a2 
+a1 a2 a3 
+
+a1 a1 a1 
+a1 a3 a3 
+a1 a3 a3 
+
+a1 a1 a1 
+a2 a2 a2 
+a1 a1 a1 
+
+a1 a1 a1 
+a2 a2 a2 
+a1 a1 a3 
+
+a1 a1 a1 
+a2 a2 a2 
+a1 a2 a3 
+
+a1 a1 a1 
+a2 a2 a2 
+a2 a2 a2 
+
+a1 a1 a1 
+a2 a2 a2 
+a2 a2 a3 
+
+a1 a1 a1 
+a2 a2 a2 
+a3 a3 a3 
+
+a1 a1 a1 
+a3 a2 a3 
+a3 a3 a3 
+
+a1 a1 a1 
+a3 a3 a3 
+a3 a3 a3 
+
+a1 a1 a3 
+a1 a1 a3 
+a1 a1 a3 
+
+a1 a1 a3 
+a1 a1 a3 
+a3 a3 a1 
+
+a1 a1 a3 
+a1 a1 a3 
+a3 a3 a3 
+
+a1 a1 a3 
+a1 a2 a3 
+a1 a1 a3 
+
+a1 a1 a3 
+a1 a2 a3 
+a1 a3 a3 
+
+a1 a1 a3 
+a1 a2 a3 
+a3 a3 a1 
+
+a1 a1 a3 
+a1 a2 a3 
+a3 a3 a3 
+
+a1 a1 a3 
+a2 a2 a3 
+a3 a3 a3 
+
+a1 a2 a1 
+a1 a2 a1 
+a1 a2 a1 
+
+a1 a2 a1 
+a1 a2 a1 
+a1 a2 a3 
+
+a1 a2 a1 
+a1 a2 a2 
+a1 a2 a3 
+
+a1 a2 a1 
+a2 a1 a2 
+a1 a2 a1 
+
+a1 a2 a1 
+a2 a1 a2 
+a1 a2 a3 
+
+a1 a2 a1 
+a2 a2 a2 
+a1 a2 a1 
+
+a1 a2 a1 
+a2 a2 a2 
+a1 a2 a3 
+
+a1 a2 a1 
+a2 a2 a2 
+a3 a2 a3 
+
+a1 a2 a2 
+a1 a2 a2 
+a1 a2 a2 
+
+a1 a2 a2 
+a1 a2 a2 
+a1 a2 a3 
+
+a1 a2 a2 
+a2 a1 a1 
+a2 a1 a1 
+
+a1 a2 a2 
+a2 a2 a2 
+a2 a2 a2 
+
+a1 a2 a2 
+a2 a2 a2 
+a2 a2 a3 
+
+a1 a2 a2 
+a2 a2 a2 
+a3 a2 a2 
+
+a1 a2 a2 
+a2 a2 a2 
+a3 a3 a3 
+
+a1 a2 a3 
+a1 a2 a3 
+a1 a2 a3 
+
+a1 a2 a3 
+a1 a2 a3 
+a3 a3 a3 
+
+a1 a2 a3 
+a2 a1 a3 
+a3 a3 a3 
+
+a1 a2 a3 
+a2 a2 a2 
+a1 a2 a3 
+
+a1 a2 a3 
+a2 a2 a2 
+a2 a2 a2 
+
+a1 a2 a3 
+a2 a2 a2 
+a3 a2 a1 
+
+a1 a2 a3 
+a2 a2 a2 
+a3 a2 a2 
+
+a1 a2 a3 
+a2 a2 a2 
+a3 a2 a3 
+
+a1 a2 a3 
+a2 a2 a2 
+a3 a3 a3 
+
+a1 a2 a3 
+a2 a2 a3 
+a2 a2 a3 
+
+a1 a2 a3 
+a2 a2 a3 
+a3 a2 a3 
+
+a1 a2 a3 
+a2 a2 a3 
+a3 a3 a2 
+
+a1 a2 a3 
+a2 a2 a3 
+a3 a3 a3 
+
+a1 a2 a3 
+a2 a3 a1 
+a3 a1 a2 
+
+a1 a2 a3 
+a2 a3 a2 
+a3 a2 a3 
+
+a1 a2 a3 
+a2 a3 a3 
+a3 a3 a3 
+
+a1 a2 a3 
+a3 a2 a3 
+a3 a2 a3 
+
+a1 a2 a3 
+a3 a3 a3 
+a3 a3 a3 
+
+a1 a3 a3 
+a1 a2 a3 
+a1 a3 a3 
+
+a1 a3 a3 
+a1 a3 a3 
+a1 a3 a3 
+
+a1 a3 a3 
+a2 a2 a2 
+a3 a3 a3 
+
+a1 a3 a3 
+a2 a3 a3 
+a3 a3 a3 
+
+a1 a3 a3 
+a3 a1 a1 
+a3 a1 a1 
+
+a1 a3 a3 
+a3 a2 a3 
+a3 a3 a3 
+
+a1 a3 a3 
+a3 a3 a3 
+a3 a3 a3 
+
+a2 a1 a1 
+a1 a2 a2 
+a1 a2 a2 
+
+a2 a1 a1 
+a1 a2 a2 
+a1 a2 a3 
+
+a2 a1 a2 
+a1 a2 a1 
+a2 a1 a2 
+
+a2 a1 a3 
+a1 a2 a3 
+a3 a3 a3 
+
+a2 a2 a1 
+a2 a2 a2 
+a1 a2 a3 
+
+a2 a2 a1 
+a2 a2 a2 
+a2 a2 a3 
+
+a2 a2 a2 
+a2 a2 a2 
+a1 a2 a3 
+
+a2 a2 a2 
+a2 a2 a2 
+a2 a2 a1 
+
+a2 a2 a2 
+a2 a2 a2 
+a2 a2 a2 
+
+a2 a2 a2 
+a2 a2 a2 
+a2 a2 a3 
+
+a2 a2 a2 
+a2 a2 a2 
+a3 a3 a3 
+
+a2 a2 a3 
+a2 a2 a3 
+a2 a2 a3 
+
+a2 a2 a3 
+a2 a2 a3 
+a3 a3 a2 
+
+a2 a2 a3 
+a2 a2 a3 
+a3 a3 a3 
+
+a2 a3 a1 
+a3 a1 a2 
+a1 a2 a3 
+
+a2 a3 a2 
+a3 a2 a3 
+a2 a3 a2 
+
+a2 a3 a3 
+a3 a3 a3 
+a3 a3 a3 
+
+a3 a1 a1 
+a1 a2 a3 
+a1 a3 a3 
+
+a3 a1 a1 
+a1 a3 a3 
+a1 a3 a3 
+
+a3 a1 a2 
+a1 a2 a3 
+a2 a3 a1 
+
+a3 a1 a3 
+a1 a2 a3 
+a3 a3 a3 
+
+a3 a1 a3 
+a3 a2 a3 
+a3 a3 a3 
+
+a3 a2 a1 
+a2 a2 a2 
+a1 a2 a3 
+
+a3 a2 a2 
+a2 a2 a2 
+a2 a2 a2 
+
+a3 a2 a3 
+a2 a2 a2 
+a3 a2 a3 
+
+a3 a2 a3 
+a2 a3 a2 
+a3 a2 a3 
+
+a3 a2 a3 
+a3 a2 a3 
+a3 a2 a3 
+
+a3 a3 a1 
+a3 a3 a1 
+a1 a1 a3 
+
+a3 a3 a2 
+a3 a3 a2 
+a2 a2 a3 
+
+a3 a3 a3 
+a1 a2 a3 
+a3 a3 a3 
+
+a3 a3 a3 
+a2 a2 a2 
+a3 a3 a3 
+
+a3 a3 a3 
+a3 a1 a3 
+a3 a3 a3 
+
+a3 a3 a3 
+a3 a2 a3 
+a3 a3 a3 
+
+a3 a3 a3 
+a3 a3 a3 
+a3 a3 a3 
+

@@ -1,0 +1,4 @@
+The number of associative operations on a set A = {a1, . . . , a1} is 1!
+The laws are: 
+a1 
+

@@ -1,0 +1,26 @@
+The number of associative operations on a set A = {a1, . . . , a2} is 8!
+The laws are: 
+a1 a1 
+a1 a1 
+
+a1 a1 
+a1 a2 
+
+a1 a1 
+a2 a2 
+
+a1 a2 
+a1 a2 
+
+a1 a2 
+a2 a1 
+
+a1 a2 
+a2 a2 
+
+a2 a1 
+a1 a2 
+
+a2 a2 
+a2 a2 
+
