@@ -22,5 +22,6 @@ void resizeArray(DynamicArray* arrayToResize);
 void deleteArray(DynamicArray* arrayToDelete);
 void sortArray(DynamicArray* arrayToSort, int (*compareFunction)(ElementType, ElementType), int reverseOrder);
 DynamicArray* deepCopyArrayOfProducts(DynamicArray* arrayToCopy);
+int getSize(DynamicArray* arrayToFindSize);
 
 #endif

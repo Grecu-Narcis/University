@@ -1,6 +1,7 @@
 #include "UI.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 UI* createUI(Service* productsService)
 {
@@ -171,7 +172,7 @@ void printAllProductsWithGivenStringInName(UI* ui)
 	printf("Enter the string to be found in products name: ");
 	gets(givenString);
 
-	DynamicArray* productsWithGivenString = getAllProductsContainingGivenStringInName(ui->productsService, givenString);
+	DynamicArray* productsWithGivenString = getAllProductsContainingStringInName(ui->productsService, givenString);
 
 	if (productsWithGivenString->size == 0)
 	{
@@ -202,7 +203,7 @@ void printAllProductsWithGivenStringInCategory(UI* ui)
 	printf("Enter the string to be found in products name: ");
 	gets(givenString);
 
-	DynamicArray* productsWithGivenString = getAllProductsContainingGivenStringInCategory(ui->productsService, givenString);
+	DynamicArray* productsWithGivenString = getAllProductsContainingStringInCategory(ui->productsService, givenString);
 
 	if (productsWithGivenString->size == 0)
 	{
@@ -237,7 +238,18 @@ void printAllProductsFromCategoryWithExpirationDateClose(UI* ui)
 	printf("Enter the number of days until expiration: ");
 	scanf("%d", &numberOfDaysUntilExpiration);
 
-	DynamicArray* productsWithGivenRequirements = getAllProductsOfGivenCategoryAndThatExpiresInGivenNumberOfDays(ui->productsService, category, numberOfDaysUntilExpiration);
+	printf("Press 1 for ascending sort.\nPress 2 for descending sort.\n");
+	printf("Your option: ");
+	int userOption, sortType;
+	scanf("%d", &userOption);
+
+	if (userOption == 1)
+		sortType = 0;
+
+	else
+		sortType = 1;
+
+	DynamicArray* productsWithGivenRequirements = getAllProductsFromCategoryWithExpirationClose(ui->productsService, category, numberOfDaysUntilExpiration, sortType);
 
 	if (productsWithGivenRequirements->size == 0)
 		printf("\nThere is no product with the given requirements! :(\n\n");
@@ -318,12 +330,14 @@ void mainMenu(UI* ui)
 
 		else if (strcmp(option, "8") == 0)
 		{
-			undo(ui->productsService);
+			undoLastOperationEfficient(ui->productsService);
+			// undoLastOperation(ui->productsService);
 		}
 
 		else if (strcmp(option, "9") == 0)
 		{
-			redo(ui->productsService);
+			redoLastOperationEfficient(ui->productsService);
+			// redoLastOperation(ui->productsService);
 		}
 
 		else if (strcmp(option, "10") == 0)

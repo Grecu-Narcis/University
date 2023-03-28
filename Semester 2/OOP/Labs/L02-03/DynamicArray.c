@@ -84,7 +84,7 @@ void sortArray(DynamicArray* arrayToSort, int(*compareFunction)(ElementType, Ele
 
 	if (reverseOrder == 1)
 	{
-		int startIndex = 0, endIndex = arrayToSort->size;
+		int startIndex = 0, endIndex = arrayToSort->size - 1;
 
 		while (startIndex < endIndex)
 		{
@@ -105,6 +105,14 @@ DynamicArray* deepCopyArrayOfProducts(DynamicArray* arrayToCopy)
 		addElement(copyArray, deepCopyProduct(arrayToCopy->elements[i]));
 
 	return copyArray;
+}
+
+int getSize(DynamicArray* arrayToFindSize)
+{
+	if (arrayToFindSize == NULL)
+		return 0;
+
+	return arrayToFindSize->size;
 }
 
 

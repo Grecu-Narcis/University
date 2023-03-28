@@ -2,8 +2,9 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
-Service* createService(Repository* productsRepository, UndoService* undoService, RedoService* redoService)
+Service* createService(Repository* productsRepository, UndoService* undoService, RedoService* redoService, EfficientUndoService* efficientUndoService, EfficientRedoService* efficientRedoService)
 {
 	Service* createdService = malloc(sizeof(Service));
 
@@ -13,6 +14,8 @@ Service* createService(Repository* productsRepository, UndoService* undoService,
 	createdService->productsRepository = productsRepository;
 	createdService->undoService = undoService;
 	createdService->redoService = redoService;
+	createdService->efficientUndoService = efficientUndoService;
+	createdService->efficientRedoService = efficientRedoService;
 
 	return createdService;
 }
@@ -23,6 +26,9 @@ int serviceAddProduct(Service* productsService, char* productName, char* product
 	Product* productToAdd = createProduct(productName, productCategory, productQuantity, productExpirationDate);
 	
 	addUndoState(productsService->undoService, getAllProductsFromRepository(productsService->productsRepository));
+	
+	Operation* currentOperation = createOperation(serviceDeleteProduct, serviceAddProduct, deepCopyProduct(productToAdd));
+	addUndoOperation(productsService->efficientUndoService, currentOperation);
 
 	int executionStatus = addProductToRepository(productsService->productsRepository, productToAdd);
 
@@ -33,6 +39,14 @@ int serviceAddProduct(Service* productsService, char* productName, char* product
 int serviceDeleteProduct(Service* productsService, char* productName, char* productCategory)
 {
 	addUndoState(productsService->undoService, getAllProductsFromRepository(productsService->productsRepository));
+
+	Product* affectedProduct = findProductInRepository(productsService->productsRepository, productName, productCategory);
+
+	if (affectedProduct != NULL)
+	{
+		Operation* currentOperation = createOperation(serviceAddProduct, serviceDeleteProduct, deepCopyProduct(affectedProduct));
+		addUndoOperation(productsService->efficientUndoService, currentOperation);
+	}
 
 	int executionStatus = removeProductFromRepository(productsService->productsRepository, productName, productCategory);
 
@@ -45,6 +59,14 @@ int serviceUpdateProduct(Service* productsService, char* productName, char* prod
 	Product* productToUpdate = createProduct(productName, productCategory, newProductQuantity, newProductExpirationDate);
 
 	addUndoState(productsService->undoService, getAllProductsFromRepository(productsService->productsRepository));
+
+	Product* affectedProduct = findProductInRepository(productsService->productsRepository, productName, productCategory);
+
+	if (affectedProduct != NULL)
+	{
+		Operation* currentOperation = createOperation(serviceUpdateProduct, serviceUpdateProduct, deepCopyProduct(affectedProduct));
+		addUndoOperation(productsService->efficientUndoService, currentOperation);
+	}
 
 	int executionStatus = updateProductInRepository(productsService->productsRepository, productToUpdate);
 
@@ -63,7 +85,7 @@ int compareProductsByQuantity(Product* firstProduct, Product* secondProduct)
 }
 
 
-DynamicArray* getAllProductsContainingGivenString(Service* productsService, char* givenString, int (*checkIfProductContainString)(Product* productToCheck, char* stringToSearch))
+DynamicArray* getAllProductsContainingString(Service* productsService, char* givenString, int (*checkIfProductContainString)(Product* productToCheck, char* stringToSearch))
 {
 	DynamicArray* productsInFridge = getAllProductsFromRepository(productsService->productsRepository);
 	DynamicArray* productsContainingGivenString = createDynamicArray(2, deleteProduct);
@@ -100,15 +122,15 @@ int checkIfProductContainStringInCategory(Product* productToCheck, char* stringT
 }
 
 
-DynamicArray* getAllProductsContainingGivenStringInName(Service* productsService, char* givenString)
+DynamicArray* getAllProductsContainingStringInName(Service* productsService, char* givenString)
 {
-	return getAllProductsContainingGivenString(productsService, givenString, checkIfProductContainStringInName);
+	return getAllProductsContainingString(productsService, givenString, checkIfProductContainStringInName);
 }
 
 
-DynamicArray* getAllProductsContainingGivenStringInCategory(Service* productsService, char* givenString)
+DynamicArray* getAllProductsContainingStringInCategory(Service* productsService, char* givenString)
 {
-	return getAllProductsContainingGivenString(productsService, givenString, checkIfProductContainStringInCategory);
+	return getAllProductsContainingString(productsService, givenString, checkIfProductContainStringInCategory);
 }
 
 
@@ -130,7 +152,7 @@ int checkIfProductIsFromCategoryAndExpiresInGivenNumberOfDays(Product* productFo
 }
 
 
-DynamicArray* getAllProductsOfGivenCategoryAndThatExpiresInGivenNumberOfDays(Service* productsService, char* givenCategory, int numberOfDaysUntilExpiration)
+DynamicArray* getAllProductsFromCategoryWithExpirationClose(Service* productsService, char* givenCategory, int numberOfDaysUntilExpiration, int reverseOrder)
 {
 	DynamicArray* productsInFridge = getAllProductsFromRepository(productsService->productsRepository);
 	DynamicArray* productsThatMeetTheRequirements = createDynamicArray(2, deleteProduct);
@@ -139,10 +161,12 @@ DynamicArray* getAllProductsOfGivenCategoryAndThatExpiresInGivenNumberOfDays(Ser
 		if (checkIfProductIsFromCategoryAndExpiresInGivenNumberOfDays(productsInFridge->elements[i], givenCategory, numberOfDaysUntilExpiration))
 			addElement(productsThatMeetTheRequirements, productsInFridge->elements[i]);
 
+	sortArray(productsThatMeetTheRequirements, compareProductsByQuantity, reverseOrder);
+
 	return productsThatMeetTheRequirements;
 }
 
-void undo(Service* productsService)
+void undoLastOperation(Service* productsService)
 {
 	DynamicArray* productsFromUndoState = popUndoState(productsService->undoService);
 
@@ -161,13 +185,12 @@ void undo(Service* productsService)
 }
 
 
-void redo(Service* productsService)
+void redoLastOperation(Service* productsService)
 {
 	DynamicArray* productsRedoState = popRedoState(productsService->redoService);
 
 	if (productsRedoState == NULL)
 	{
-		printf("State is null in redo!\n\n\n");
 		return;
 	}
 
@@ -181,6 +204,81 @@ void redo(Service* productsService)
 	setRepositoryListOfProducts(productsService->productsRepository, productsRedoState);
 }
 
+void undoLastOperationEfficient(Service* productsService)
+{
+	Operation* lastOperation = getLastUndoOperation(productsService->efficientUndoService);
+
+	if (lastOperation == NULL)
+		return;
+
+	addRedoOperation(productsService->efficientRedoService, deepCopyOperation(lastOperation));
+
+	if (lastOperation->functionForUndo == serviceAddProduct)
+	{
+		// product was removed during the last operation
+
+		Product* productToAdd = lastOperation->affectedProduct;
+		serviceAddProduct(productsService, productToAdd->name, productToAdd->category, productToAdd->quantity, productToAdd->expirationDate);
+		removeLastUndoOperation(productsService->efficientUndoService);
+	}
+
+	else if (lastOperation->functionForUndo == serviceDeleteProduct)
+	{
+		Product* productToRemove = lastOperation->affectedProduct;
+
+		serviceDeleteProduct(productsService, productToRemove->name, productToRemove->category);
+		removeLastUndoOperation(productsService->efficientUndoService);
+	}
+
+	else if (lastOperation->functionForUndo == serviceUpdateProduct)
+	{
+		Product* productToUpdate = lastOperation->affectedProduct;
+
+		serviceUpdateProduct(productsService, productToUpdate->name, productToUpdate->category, productToUpdate->quantity, productToUpdate->expirationDate);
+		removeLastUndoOperation(productsService->efficientUndoService);
+	}
+
+	removeLastUndoOperation(productsService->efficientUndoService);
+}
+
+
+void redoLastOperationEfficient(Service* productsService)
+{
+	Operation* lastOperation = getLastUndoOperation(productsService->efficientRedoService);
+
+	if (lastOperation == NULL)
+		return;
+
+	addUndoOperation(productsService->efficientUndoService, deepCopyOperation(lastOperation));
+
+	if (lastOperation->functionForRedo == serviceAddProduct)
+	{
+		// product was removed during the last operation
+
+		Product* productToAdd = lastOperation->affectedProduct;
+		serviceAddProduct(productsService, productToAdd->name, productToAdd->category, productToAdd->quantity, productToAdd->expirationDate);
+		removeLastUndoOperation(productsService->efficientUndoService);
+	}
+
+	else if (lastOperation->functionForRedo == serviceDeleteProduct)
+	{
+		Product* productToRemove = lastOperation->affectedProduct;
+
+		serviceDeleteProduct(productsService, productToRemove->name, productToRemove->category);
+		removeLastUndoOperation(productsService->efficientUndoService);
+	}
+
+	else if (lastOperation->functionForRedo == serviceUpdateProduct)
+	{
+		Product* productToUpdate = lastOperation->affectedProduct;
+
+		serviceUpdateProduct(productsService, productToUpdate->name, productToUpdate->category, productToUpdate->quantity, productToUpdate->expirationDate);
+		removeLastUndoOperation(productsService->efficientUndoService);
+	}
+
+	removeLastRedoOperation(productsService->efficientRedoService);
+}
+
 
 void deleteService(Service* serviceToDelete)
 {
@@ -189,6 +287,7 @@ void deleteService(Service* serviceToDelete)
 
 	deleteUndoService(serviceToDelete->undoService);
 	deleteRedoService(serviceToDelete->redoService);
-
+	destroyEfficientUndoService(serviceToDelete->efficientUndoService);
+	destroyEfficientRedoService(serviceToDelete->efficientRedoService);
 	free(serviceToDelete);
 }

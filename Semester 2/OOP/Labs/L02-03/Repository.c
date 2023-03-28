@@ -120,12 +120,6 @@ void deleteRepository(Repository* repositoryToDelete)
 }
 
 
-int getSize(Repository* productsRepository)
-{
-	return productsRepository->products->size;
-}
-
-
 DynamicArray* getAllProductsFromRepository(Repository* productsRepository)
 {
 	return productsRepository->products;
@@ -137,4 +131,42 @@ void setRepositoryListOfProducts(Repository* productsRepository, DynamicArray* l
 		return;
 
 	productsRepository->products = listOfProducts;
+}
+
+
+void addSampleProducts(Repository* productsRepository)
+{
+	Product* productToAdd;
+
+	productToAdd = createProduct("apples", "fruit", 3, createDate(5, 9, 2023));
+	addProductToRepository(productsRepository, productToAdd);
+
+	productToAdd = createProduct("pears", "fruit", 5, createDate(12, 4, 2023));
+	addProductToRepository(productsRepository, productToAdd);
+
+	productToAdd = createProduct("eggs", "dairy", 30, createDate(30, 10, 2023));
+	addProductToRepository(productsRepository, productToAdd);
+
+	productToAdd = createProduct("beef", "meat", 1, createDate(12, 12, 2023));
+	addProductToRepository(productsRepository, productToAdd);
+
+	productToAdd = createProduct("chocolate", "sweets", 5, createDate(5, 3, 2025));
+	addProductToRepository(productsRepository, productToAdd);
+}
+
+Product* findProductInRepository(Repository* productsRepository, char* nameOfProductToFind, char* categoryOfProductToFind)
+{
+	if (productsRepository == NULL)
+		return NULL;
+
+	for (int i = 0; i < getSize(productsRepository->products); i++)
+	{
+		Product* currentProduct = getElementAtIndex(productsRepository->products, i);
+
+		if (strcmp(currentProduct->name, nameOfProductToFind) == 0 &&
+			strcmp(currentProduct->category, categoryOfProductToFind) == 0)
+			return currentProduct;
+	}
+
+	return NULL;
 }
