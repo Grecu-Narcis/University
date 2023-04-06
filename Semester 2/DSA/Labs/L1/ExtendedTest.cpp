@@ -6,6 +6,33 @@
 
 using namespace std;
 
+bool condition(TElem e)
+{
+	return e % 5 == 0;
+}
+
+void testExtra()
+{
+	cout << "Test extra\n";
+
+	Set s;
+
+	for (int i = 0; i < 1000; i++)
+		s.add(i);
+
+	s.filter(condition);
+
+	SetIterator it = s.iterator();
+
+	while (it.valid()) {
+		TElem currentElement = it.getCurrent();
+
+		assert(condition(currentElement) == true);
+
+		it.next();
+	}
+}
+
 void printM(Set& s){
 	SetIterator it = s.iterator();
 	while (it.valid()){
@@ -297,6 +324,7 @@ void testQuantity() {//add lots of elements
 
 // we don't know how the set is represented and in which order the elements are stored or printed, we can only test general thing
 void testAllExtended() {
+	testExtra();
 	testCreate();
 	testAdd();
 	testRemove();

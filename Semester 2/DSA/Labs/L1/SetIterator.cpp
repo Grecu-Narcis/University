@@ -14,6 +14,7 @@ SetIterator::SetIterator(const Set& m) : set(m)
 void SetIterator::first() {
 	this->position = 0;
 }
+// BC: Theta(1), AC: Theta(1), WC: Theta(1)
 
 
 void SetIterator::next() {
@@ -25,6 +26,7 @@ void SetIterator::next() {
 
 	this->position += 1;
 }
+// BC: Theta(1), AC: Theta(1), WC: Theta(1)
 
 
 TElem SetIterator::getCurrent() {
@@ -33,6 +35,8 @@ TElem SetIterator::getCurrent() {
 
 	throw exception();
 }
+// BC: Theta(1), AC: Theta(1), WC: Theta(1)
+
 
 bool SetIterator::valid() const {
 	if (this->position < this->iteratorSet.size())
@@ -40,6 +44,5 @@ bool SetIterator::valid() const {
 
 	return false;
 }
-
-
+// BC: Theta(1), AC: Theta(1), WC: Theta(1)
 

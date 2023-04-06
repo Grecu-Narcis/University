@@ -19,9 +19,8 @@ Set::Set(const Set& s)
 
 	for (int i = 0; i < s.length; i++)
 		this->elements[i] = s.elements[i];
-
-	// std::copy(s.elements, s.elements + s.length, this->elements);
 }
+
 
 Set& Set::operator=(const Set& s)
 {
@@ -33,8 +32,6 @@ Set& Set::operator=(const Set& s)
 
 	for (int i = 0; i < s.length; i++)
 		newElements[i] = s.elements[i];
-
-	// std::copy(s.elements, s.elements + s.size(), newElements);
 
 	delete[] elements;
 
@@ -57,6 +54,7 @@ bool Set::add(TElem elem) {
 
 	return true;
 }
+// BC: Theta(1), OC: O(n), WC: Theta(n)
 
 
 bool Set::remove(TElem elem) {
@@ -74,13 +72,17 @@ bool Set::remove(TElem elem) {
 	if (indexOfElementInSet == -1)
 		return false;
 
-	for (int i = indexOfElementInSet; i < this->length - 1; i++)
-		this->elements[i] = this->elements[i + 1];
+	this->elements[indexOfElementInSet] = this->elements[this->length - 1];
 
 	this->length--;
 
+	if (this->length * 4 < this->capacity)
+		this->resize(this->capacity / 2);
+
 	return true;
 }
+// BC: Theta(1), OC: O(n), WC: Theta(n)
+
 
 bool Set::search(TElem elem) const {
 	//TODO - Implementation
@@ -91,18 +93,21 @@ bool Set::search(TElem elem) const {
 
 	return false;
 }
-
+// BC: Theta(1), AC: O(n), WC: Theta(n)
+// 1/n+1 + 2/n+1 + ... + n/n+1 + 1 = n(n+1)/2(n+1) + 1 = n/2 + 1 
 
 int Set::size() const {
 	//TODO - Implementation
 	return this->length;
 }
+// BC: Theta(1), AC: Theta(1), WC: Theta(1)
 
 
 bool Set::isEmpty() const {
 	//TODO - Implementation
 	return this->length == 0;
 }
+// BC: Theta(1), AC: Theta(1), WC: Theta(1)
 
 
 Set::~Set() {
@@ -110,6 +115,32 @@ Set::~Set() {
 
 	delete[] this->elements;
 }
+
+void Set::filter(Condition cond)
+{
+	TElem* elementsToKeep = new TElem[this->capacity];
+	int newLength = 0;
+
+	SetIterator iterator = this->iterator();
+
+	while (iterator.valid())
+	{
+		TElem currentElement = iterator.getCurrent();
+		if (cond(currentElement))
+			elementsToKeep[newLength++] = currentElement;
+
+		iterator.next();
+	}
+
+	/*for (int i = 0; i < this->length; i++)
+		if (cond(this->elements[i]))
+			elementsToKeep[newLength++] = this->elements[i];*/
+
+	delete[] this->elements;
+	this->elements = elementsToKeep;
+	this->length = newLength;
+}
+// BC: Theta(n), AC: Theta(n), WC: Theta(n)
 
 
 SetIterator Set::iterator() const {
@@ -131,5 +162,5 @@ void Set::resize(int newCapacity) {
 
 	this->elements = newArray;
 }
-
+// BC: Theta(n), AC: Theta(n), WC: Theta(n)
 

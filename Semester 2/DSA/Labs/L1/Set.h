@@ -4,6 +4,7 @@
 //DO NOT CHANGE THIS PART
 #define NULL_TELEM -111111
 typedef int TElem;
+typedef bool (*Condition)(TElem);
 class SetIterator;
 
 class Set {
@@ -44,6 +45,8 @@ class Set {
 
         // destructor
         ~Set();
+
+        void filter(Condition cond);
 
     private:
         void resize(int newCapacity);
