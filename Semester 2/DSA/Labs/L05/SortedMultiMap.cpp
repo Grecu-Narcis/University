@@ -138,6 +138,22 @@ SortedMultiMap::SortedMultiMap(Relation r) {
 	this->orderRelation = r;
 }
 
+void SortedMultiMap::replace(TKey k, TValue oldValue, TValue newValue)
+{
+	Node* nodeAssoctiatedToKey = this->searchNodeKey(this->root, k);
+
+	if (nodeAssoctiatedToKey == nullptr)
+		return;
+
+	for (int i = 0; i < nodeAssoctiatedToKey->getSize(); i++)
+		if (nodeAssoctiatedToKey->getElementAtPosition(i).second == oldValue)
+			nodeAssoctiatedToKey->setValuetAtPosition(i, newValue);
+
+	return;
+}
+// BC: Theta(1), WC: Theta(n + N), AC: O(n + N)
+// where n is the number of nodes in the tree and N is the number of values associated to key 'k'
+
 
 void SortedMultiMap::add(TKey c, TValue v) {
 	//TODO - Implementation
@@ -372,6 +388,16 @@ int Node::getSize()
 TElem Node::getElementAtPosition(int position)
 {
 	return make_pair(this->nodeKey, this->keyValues[position]);
+}
+// BC: Theta(1), WC: Theta(1), AC: Theta(1)
+
+
+void Node::setValuetAtPosition(int position, TValue newValue)
+{
+	if (position >= this->size)
+		return;
+
+	this->keyValues[position] = newValue;
 }
 // BC: Theta(1), WC: Theta(1), AC: Theta(1)
 

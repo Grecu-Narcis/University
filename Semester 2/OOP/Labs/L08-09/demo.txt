@@ -1,0 +1,12 @@
+Learn C++,Bocicor Iuliana,www.youtube.com,1237,12,12
+Intro in C++,Tech Ed,https://www.youtube.com,2314,45,35
+C++ for beginners,Grecu Narcis,https://www.freecodecamp.com,1002,72,55
+Advanced C++,Bocicor Iuliana,https://www.cs.ubbcluj.ro,15240,90,15
+Learn C++ with me!,Grecu Narcis,https://www.facebook.com,13,15,15
+C++ snake game,Tech Ed,https://www.youtube.com,513,10,15
+Poweful C++ tricks,Grecu Narcis,https://www.youtube.com,1000,30,15
+Algorithms in C++,Grecu Narcis,https://www.youtube.com,4234,30,15
+Hacking with C++,Cool guy,https://www.youtube.com,5103,140,23
+Learning C++,Andreea,www.andreea.com,1223312,12,12
+Demo,Demo,Demo,12,12,343
+New Tutorial,New presenter,abcd,12,23,10

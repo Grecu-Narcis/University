@@ -156,7 +156,7 @@ int SortedMultiMap::getKeyRange() const
 
 SortedMultiMap::SortedMultiMap(Relation r) {
 	//TODO - Implementation
-	this->m = 2;
+	this->m = 8;
 	this->length = 0;
 	this->elems = new TElem[this->m];
 	this->next = new int[this->m];

@@ -249,10 +249,38 @@ void testIterator() {
 	testIterator(desc);
 }
 
+
+void testExtra()
+{
+	cout << "Test extra" << endl;
+
+	SortedMultiMap smm(asc);
+
+	for (int i = 1; i <= 10; i++)
+		smm.add(i, 2 * i);
+
+	smm.replace(4, 8, 100);
+
+	assert(smm.search(4).size() == 1);
+	assert(smm.search(4)[0] == 100);
+
+	smm.replace(4, 101, 102);
+	assert(smm.search(4)[0] == 100);
+
+	vector<TValue> valuesAtKey = smm.search(4);
+
+	for (auto value : valuesAtKey)
+	{
+		assert(value != 101);
+		assert(value != 102);
+	}
+}
+
 void testAllExtended() {
 	testCreate();
 	testSearch();
 	testRemove();
 	testIterator();
 	testRelations();
+	testExtra();
 }

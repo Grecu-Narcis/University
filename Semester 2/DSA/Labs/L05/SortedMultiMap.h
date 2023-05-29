@@ -48,6 +48,7 @@ public:
     int getSize();
 
     TElem getElementAtPosition(int position);
+    void setValuetAtPosition(int position, TValue newValue);
 };
 
 
@@ -72,6 +73,8 @@ class SortedMultiMap {
 
     // constructor
     SortedMultiMap(Relation r);
+
+    void replace(TKey k, TValue oldValue, TValue newValue);
 
 	//adds a new key value pair to the sorted multi map
     void add(TKey c, TValue v);
