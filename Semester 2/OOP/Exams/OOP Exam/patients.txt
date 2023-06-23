@@ -1,0 +1,5 @@
+David | heart | heart | None | 2023.06.17
+Ben | diagnosis | heart | John | 2023.07.12
+Narcis | diagnosis 1 | heart | John | 2023.12.23
+Johnny | diagnose1 | dermatologist | Marry | 2023.12.23
+Amy | diagnose1 | dermatologist | Marry | 2023.12.23

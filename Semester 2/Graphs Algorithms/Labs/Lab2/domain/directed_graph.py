@@ -11,11 +11,9 @@ class DirectedGraph:
             self.__dict_in[i] = []
             self.__dict_out[i] = []
 
-
     @property
     def dict_in(self):
         return self.__dict_in
-
 
     @property
     def dict_out(self):
@@ -26,12 +24,18 @@ class DirectedGraph:
         return self.__costs
 
 
+    def __str__(self):
+        return ', '.join(map(lambda x: str(x), self.get_set_of_vertices()))
+
+
+    def __repr__(self):
+        return str(self)
+
     def is_vertex(self, vertex_to_check: int):
         if vertex_to_check not in self.__dict_in:
             return False
 
         return True
-
 
     def add_vertex(self, vertex_to_add: int):
         if self.is_vertex(vertex_to_add):
@@ -40,23 +44,13 @@ class DirectedGraph:
         self.__dict_in[vertex_to_add] = []
         self.__dict_out[vertex_to_add] = []
 
-
     def remove_vertex(self, vertex_to_remove: int):
         if not self.is_vertex(vertex_to_remove):
             raise ValueError('Vertex does not exist!')
 
-        # in_edges = self.get_in_bound_edges(vertex_to_remove)
-        # out_edges = self.get_out_bound_edges(vertex_to_remove)
-        #
-        # for edge in in_edges:
-        #     del self.__costs[edge]
-        #
-        # for edge in out_edges:
-        #     del self.__costs[edge]
-
         for vertex in self.__dict_out[vertex_to_remove]:
             del self.__costs[(vertex_to_remove, vertex)]
-            
+
             self.__dict_in[vertex].remove(vertex_to_remove)
 
         for vertex in self.__dict_in[vertex_to_remove]:
@@ -84,7 +78,6 @@ class DirectedGraph:
 
         return True
 
-
     def add_edge(self, edge_to_add: tuple, cost: int):
         start_point = edge_to_add[0]
         end_point = edge_to_add[1]
@@ -99,7 +92,6 @@ class DirectedGraph:
         self.__dict_in[end_point].append(start_point)
         self.__costs[edge_to_add] = cost
 
-
     def remove_edge(self, edge_to_remove: tuple):
         if not self.is_edge(edge_to_remove):
             raise ValueError('Edge does not exist!')
@@ -112,14 +104,11 @@ class DirectedGraph:
         self.__dict_out[x].remove(y)
         del self.__costs[edge_to_remove]
 
-
     def get_number_of_vertices(self):
         return len(self.__dict_in)
 
-
     def get_set_of_vertices(self):
         return list(self.__dict_in.keys())
-
 
     def get_in_degree(self, vertex: int):
         if not self.is_vertex(vertex):
@@ -127,13 +116,11 @@ class DirectedGraph:
 
         return len(self.__dict_in[vertex])
 
-
     def get_out_degree(self, vertex: int):
         if not self.is_vertex(vertex):
             raise ValueError('Vertex not in graph!')
 
         return len(self.__dict_out[vertex])
-
 
     def get_in_bound_edges(self, vertex: int):
         if not self.is_vertex(vertex):
@@ -146,7 +133,6 @@ class DirectedGraph:
 
         return edges
 
-
     def get_out_bound_edges(self, vertex: int):
         if not self.is_vertex(vertex):
             raise ValueError('Vertex not in graph.')
@@ -158,7 +144,6 @@ class DirectedGraph:
 
         return edges
 
-
     def get_all_edges(self):
         edges = []
 
@@ -167,7 +152,6 @@ class DirectedGraph:
                 edges.append((edge, self.__costs[edge]))
 
         return edges
-
 
     def make_copy(self):
         copy_graph = DirectedGraph()
@@ -182,7 +166,94 @@ class DirectedGraph:
         return copy_graph
 
 
-def read_graph_from_file_1(filename: str):
+    def get_cost(self, edge: tuple):
+        if not self.is_edge(edge):
+            raise ValueError('Edge does not exist!')
+
+        return self.__costs[edge]
+
+
+def make_directed_graph_from_vertex_list(graph: DirectedGraph, vertex_list: list):
+    new_graph = DirectedGraph()
+
+    for vertex in vertex_list:
+        new_graph.add_vertex(vertex)
+
+    for vertex in vertex_list:
+        for successor in graph.dict_out[vertex]:
+            if successor in vertex_list:
+                new_graph.add_edge((vertex, successor), graph.costs[(vertex, successor)])
+
+    return new_graph
+
+
+def dfs_out(graph: DirectedGraph, vertex: int, visited_vertices: set, dfs_stack: list):
+    visited_vertices.add(vertex)
+
+    for successor in graph.dict_out[vertex]:
+        if successor not in visited_vertices:
+            dfs_out(graph, successor, visited_vertices, dfs_stack)
+
+    dfs_stack.append(vertex)
+
+
+def dfs_in(graph: DirectedGraph, vertex: int, visited_vertices: set):
+    connected_component = []
+
+    nodes_stack = [vertex]
+
+    while len(nodes_stack) > 0:
+        current_node = nodes_stack.pop()
+
+        if current_node in visited_vertices:
+            continue
+
+        visited_vertices.add(current_node)
+
+        connected_component.append(current_node)
+
+        for predecessor in graph.dict_in[current_node]:
+            nodes_stack.append(predecessor)
+
+    return connected_component
+
+
+def get_strongly_connected_components(graph):
+    visited_vertices = set()
+    number_of_connected_components = 0
+
+    nodes_stack = []
+
+    for vertex in graph.get_set_of_vertices():
+        if vertex in visited_vertices:
+            continue
+
+        dfs_out(graph, vertex, visited_vertices, nodes_stack)
+
+        # a new connected component was found
+        # we need to visit every node we can reach from this vertex
+
+    visited_vertices.clear()
+    connected_components = {}
+
+    while len(nodes_stack) > 0:
+        current_vertex = nodes_stack.pop()
+
+        if current_vertex in visited_vertices:
+            continue
+
+        number_of_connected_components += 1
+        connected_components[number_of_connected_components] = dfs_in(graph, current_vertex, visited_vertices)
+
+    strongly_components = []
+
+    for component in connected_components.values():
+        strongly_components.append(make_directed_graph_from_vertex_list(graph, component))
+
+    return strongly_components
+
+
+def read_directed_graph_from_file_1(filename: str):
     file = open(filename, 'rt')
 
     number_of_vertices, number_of_edges = [int(x) for x in file.readline().strip().split()]
@@ -199,7 +270,7 @@ def read_graph_from_file_1(filename: str):
     return graph
 
 
-def read_graph_from_file_2(filename: str):
+def read_directed_graph_from_file_2(filename: str):
     file = open(filename, 'rt')
 
     graph = DirectedGraph()
@@ -224,7 +295,7 @@ def read_graph_from_file_2(filename: str):
     return graph
 
 
-def write_graph_to_file(filename: str, graph: DirectedGraph):
+def write_directed_graph_to_file(filename: str, graph: DirectedGraph):
     file = open(filename, 'wt')
 
     for node in graph.get_set_of_vertices():
@@ -238,7 +309,7 @@ def write_graph_to_file(filename: str, graph: DirectedGraph):
     file.close()
 
 
-def generate_random_graph(number_of_vertices: int, number_of_edges: int):
+def generate_random_directed_graph(number_of_vertices: int, number_of_edges: int):
     if number_of_vertices * number_of_vertices < number_of_edges:
         raise ValueError(f"With {number_of_vertices} vertices you can have at most {number_of_vertices ** 2} edges!")
 
