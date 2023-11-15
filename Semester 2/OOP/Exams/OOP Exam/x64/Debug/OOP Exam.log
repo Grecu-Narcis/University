@@ -1,0 +1,17 @@
+﻿  Reading Qt configuration (D:/Apps/Qt/6.5.0/msvc2019_64/bin/qmake)
+  Doctor.cpp
+  DoctorsRepository.cpp
+  Observer.cpp
+  Patient.cpp
+  PatientsRepository.cpp
+  Repository.cpp
+  Service.cpp
+  StatisticWindow.cpp
+  StringOperations.cpp
+  Subject.cpp
+  Window.cpp
+  main.cpp
+  qrc_Window.cpp
+  moc_Window.cpp
+  moc_StatisticWindow.cpp
+  OOP Exam.vcxproj -> E:\University\Semester 2\OOP\Exams\OOP Exam\x64\Debug\OOP Exam.exe

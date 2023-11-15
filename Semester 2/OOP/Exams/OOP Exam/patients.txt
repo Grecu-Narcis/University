@@ -1,5 +1,10 @@
 David | heart | heart | None | 2023.06.17
 Ben | diagnosis | heart | John | 2023.07.12
+mario | sawew | ginecology | None | 2023.12.12
 Narcis | diagnosis 1 | heart | John | 2023.12.23
-Johnny | diagnose1 | dermatologist | Marry | 2023.12.23
+Johnny | diagnose2 | dermatologist | Marry | 2023.12.23
 Amy | diagnose1 | dermatologist | Marry | 2023.12.23
+Bogdan | diagnose2 | dermatologist | None | 2023.12.23
+Mihai | diagnose2 | None | None | 2023.12.23
+sdfjknsdkjvsdnjkv | diagnosesfdnsdfj | None | None | 2023.12.23
+sdfjknsdkjvsd | diagnosesfdnsdfj | sdfjsdf | None | 2023.12.23
