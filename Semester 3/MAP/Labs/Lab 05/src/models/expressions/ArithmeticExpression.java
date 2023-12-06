@@ -4,8 +4,8 @@ import exceptions.InterpreterException;
 import models.values.IValue;
 import models.types.IntType;
 import models.values.IntValue;
-import models.utils.MyIDictionary;
-import models.utils.MyIHeap;
+import models.adts.MyIDictionary;
+import models.adts.MyIHeap;
 
 public class ArithmeticExpression implements IExpression {
     private final IExpression firstExpression, secondExpression;
@@ -28,21 +28,17 @@ public class ArithmeticExpression implements IExpression {
      * @throws InterpreterException If the operands are not integers, or if division by zero is attempted.
      */
     @Override
-    public IValue evaluate(MyIDictionary<String, IValue> symbolTable, MyIHeap heapTable, int threadID) throws InterpreterException {
+    public IValue evaluate(MyIDictionary<String, IValue> symbolTable, MyIHeap heapTable) throws InterpreterException {
         IValue firstValue, secondValue;
-        firstValue = firstExpression.evaluate(symbolTable, heapTable, threadID);
-        secondValue = secondExpression.evaluate(symbolTable, heapTable, threadID);
-
-        String errorThreadIdentifier = "Thread: " + threadID + " - ";
+        firstValue = firstExpression.evaluate(symbolTable, heapTable);
+        secondValue = secondExpression.evaluate(symbolTable, heapTable);
 
         // check if both operand are integers
         if (!firstValue.getType().equals(new IntType()))
-            throw new InterpreterException(errorThreadIdentifier +
-                    "First operand is not integer!");
+            throw new InterpreterException("First operand is not integer!");
 
         if (!secondValue.getType().equals(new IntType()))
-            throw new InterpreterException(errorThreadIdentifier +
-                    "Second operand is not integer!");
+            throw new InterpreterException("Second operand is not integer!");
 
         IntValue firstOperand = (IntValue) firstValue;
         IntValue secondOperand = (IntValue) secondValue;
@@ -58,7 +54,7 @@ public class ArithmeticExpression implements IExpression {
             case '*' -> new IntValue(firstNumber * secondNumber);
             case '/' -> {
                 if (secondNumber == 0)
-                    throw new InterpreterException(errorThreadIdentifier + "Division by 0!");
+                    throw new InterpreterException("Division by 0!");
                 yield new IntValue(firstNumber / secondNumber);
             }
             default -> null;

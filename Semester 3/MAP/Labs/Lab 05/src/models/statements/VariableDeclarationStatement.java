@@ -3,7 +3,7 @@ package models.statements;
 import exceptions.InterpreterException;
 import models.*;
 import models.types.*;
-import models.utils.MyIDictionary;
+import models.adts.MyIDictionary;
 import models.values.IValue;
 
 public class VariableDeclarationStatement implements IStatement {
@@ -25,15 +25,13 @@ public class VariableDeclarationStatement implements IStatement {
      * @throws InterpreterException If the variable is already defined.
      */
     @Override
-    public PrgState execute(PrgState currentState) throws InterpreterException {
+    public ProgramState execute(ProgramState currentState) throws InterpreterException {
         MyIDictionary<String, IValue> symbolTable = currentState.getSymbolTable();
 
-        String errorThreadIdentifier = "Thread: " + currentState.getId() + " - ";
 
         // Check if the variable is already defined
         if (symbolTable.isDefined(variableId))
-            throw new InterpreterException(errorThreadIdentifier +
-                    "Variable already defined!");
+            throw new InterpreterException("Variable already defined!");
 
         // Put the new variable in the symbol table and initialize it with the default value of the type
         symbolTable.put(variableId, variableType.defaultValue());

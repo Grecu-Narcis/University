@@ -1,13 +1,13 @@
 package models.statements;
 
 import exceptions.InterpreterException;
-import models.PrgState;
+import models.ProgramState;
 import models.expressions.IExpression;
 import models.values.IValue;
 import models.types.StringType;
 import models.values.StringValue;
-import models.utils.MyIDictionary;
-import models.utils.MyIHeap;
+import models.adts.MyIDictionary;
+import models.adts.MyIHeap;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,25 +32,21 @@ public class CloseReadFileStatement implements IStatement {
      * @throws InterpreterException          If the file is not opened or if an error occurs during file closing.
      */
     @Override
-    public PrgState execute(PrgState currentState) throws InterpreterException {
+    public ProgramState execute(ProgramState currentState) throws InterpreterException {
         MyIDictionary<String, IValue> symbolTable = currentState.getSymbolTable();
         MyIHeap heapTable = currentState.getHeapTable();
         MyIDictionary<String, BufferedReader> fileTable = currentState.getFileTable();
 
-        IValue fileNameValue = fileNameExpression.evaluate(symbolTable, heapTable, currentState.getId());
-
-        String errorThreadIdentifier = "Thread: " + currentState.getId() + " - ";
+        IValue fileNameValue = fileNameExpression.evaluate(symbolTable, heapTable);
 
         if (!fileNameValue.getType().equals(new StringType()))
-            throw new InterpreterException(errorThreadIdentifier
-                    + fileNameExpression + " does not evaluate to a StringType!");
+            throw new InterpreterException(fileNameExpression + " does not evaluate to a StringType!");
 
         StringValue fileName = (StringValue) fileNameValue;
 
         // Check if the file is opened in the file table
         if (!fileTable.isDefined(fileName.getValue()))
-            throw new InterpreterException(errorThreadIdentifier +
-                    String.format("File %s is not opened!", fileName));
+            throw new InterpreterException(String.format("File %s is not opened!", fileName));
 
         // Get the BufferedReader associated with the file name
         BufferedReader fileToClose = fileTable.get(fileName.getValue());
@@ -63,8 +59,7 @@ public class CloseReadFileStatement implements IStatement {
 
         catch (IOException e)
         {
-            throw new InterpreterException(errorThreadIdentifier +
-                    String.format("Failed to close file %s!", fileName.getValue()));
+            throw new InterpreterException(String.format("Failed to close file %s!", fileName.getValue()));
         }
 
         return null;

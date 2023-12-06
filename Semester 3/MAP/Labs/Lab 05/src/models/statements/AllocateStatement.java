@@ -1,13 +1,13 @@
 package models.statements;
 
 import exceptions.InterpreterException;
-import models.PrgState;
+import models.ProgramState;
 import models.expressions.IExpression;
 import models.values.IValue;
 import models.types.ReferenceType;
 import models.values.ReferenceValue;
-import models.utils.MyIDictionary;
-import models.utils.MyIHeap;
+import models.adts.MyIDictionary;
+import models.adts.MyIHeap;
 
 public class AllocateStatement implements IStatement {
     // USAGE: new(variable, value) translates into -> new AllocateStatement(variable, value);
@@ -32,30 +32,28 @@ public class AllocateStatement implements IStatement {
      * @throws InterpreterException          If an error occurs during heap allocation.
      */
     @Override
-    public PrgState execute(PrgState currentState) throws InterpreterException {
+    public ProgramState execute(ProgramState currentState) throws InterpreterException {
         MyIDictionary<String, IValue> symbolTable = currentState.getSymbolTable();
         MyIHeap heapTable = currentState.getHeapTable();
 
-        String errorThreadIdentifier = "Thread: " + currentState.getId() + " ";
-
         // if the variable we want to allocate is not defined stop
         if (!symbolTable.isDefined(variableName))
-            throw new InterpreterException(errorThreadIdentifier + "Variable: " + variableName + " is not defined in symbol table!");
+            throw new InterpreterException("Variable: " + variableName + " is not defined in symbol table!");
 
         // if the variable we want to allocate is not of reference type we stop
         if (!(symbolTable.get(variableName).getType() instanceof ReferenceType))
-            throw new InterpreterException(errorThreadIdentifier + "Variable: " + variableName + " is not of reference type!");
+            throw new InterpreterException("Variable: " + variableName + " is not of reference type!");
 
         // get the variable from symbol table and evaluate the expression
         ReferenceValue variableToAllocate = (ReferenceValue) symbolTable.get(variableName);
-        IValue expressionValue = expressionToEvaluate.evaluate(symbolTable, heapTable, currentState.getId());
+        IValue expressionValue = expressionToEvaluate.evaluate(symbolTable, heapTable);
 
         // get the ReferenceType of the variable from symbol table for further accessing the inner type
         ReferenceType variableType = (ReferenceType) variableToAllocate.getType();
 
         // check if the inner type is same as expression type
         if (!expressionValue.getType().equals(variableType.getInnerType()))
-            throw new InterpreterException(errorThreadIdentifier + "Expression does not match location type!");
+            throw new InterpreterException("Expression does not match location type!");
 
         // allocate and update the address of the reference
         int addressOfVariable = heapTable.allocate(expressionValue);

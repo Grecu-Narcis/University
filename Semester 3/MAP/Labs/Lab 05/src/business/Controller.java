@@ -1,24 +1,23 @@
 package business;
 
 import exceptions.InterpreterException;
+import exceptions.StackException;
 import infrastructure.IRepository;
+import models.statements.IStatement;
+import models.adts.MyIStack;
+import models.ProgramState;
 import models.values.IValue;
 import models.values.ReferenceValue;
-import models.PrgState;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class Controller {
     private final IRepository programsRepository;
-    private ExecutorService threadsExecutor;
 
     public Controller(IRepository programs)
     {
@@ -26,120 +25,52 @@ public class Controller {
     }
 
     /**
-     * Adds a new program state to the repository.
+     * Adds a program state to the repository.
      *
-     * @param programToAdd The program state to be added.
+     * @param programToAdd The ProgramState to be added to the repository.
      */
-    public void addProgram(PrgState programToAdd)
+    public void addProgram(ProgramState programToAdd)
     {
         programsRepository.addProgram(programToAdd);
     }
 
     /**
-     * Executes all steps for all programs until none are left or all programs are completed.
+     * Executes one statement from the top of the execution stack of the given ProgramState.
      *
-     * @throws InterpreterException if an error occurs during program execution.
+     * @param currentState The current program state.
+     * @return The updated ProgramState after executing one statement.
+     * @throws InterpreterException if an error occurs during statement execution.
      */
-    public void allSteps() throws InterpreterException
-    {
-        threadsExecutor = Executors.newFixedThreadPool(2);
-        List<PrgState> programsList = removeCompletedPrograms(programsRepository.getAllPrograms());
-
-        while (!programsList.isEmpty())
-        {
-            this.updateHeap();
-
-            this.oneStepForAllPrograms(programsList);
-            programsList = removeCompletedPrograms(programsRepository.getAllPrograms());
-        }
-
-        threadsExecutor.shutdownNow();
-        programsRepository.setProgramsList(programsList);
-    }
-
-    /**
-     * Creates a list of Callables for executing one statement in each program state.
-     *
-     * @param allPrograms List of program states.
-     * @return List of Callables, each representing the execution of one statement in a program state.
-     */
-    private List<Callable<PrgState>> createListOfCallables(List<PrgState> allPrograms)
-    {
-        return allPrograms.stream()
-                        .map((PrgState program) -> (Callable<PrgState>) (program::executeOneStatement))
-                        .collect(Collectors.toList());
-    }
-
-    /**
-     * Executes one step for each program in the provided list of Callables concurrently using a thread pool.
-     *
-     * @param callList List of Callables representing the execution of one statement in each program state.
-     * @return List of Pair objects containing the updated program state or any thrown InterpreterException.
-     */
-    private List<Pair> executeOneStepForEachProgram(List<Callable<PrgState>> callList)
-    {
-        List<Pair> newProgramsList = null;
+    public ProgramState executeOneStatement(ProgramState currentState) throws InterpreterException {
+        MyIStack<IStatement> exeStack = currentState.getStack();
 
         try {
-            newProgramsList = threadsExecutor.invokeAll(callList).stream()
-                    .map(future -> {
-                        try {
-                            return new Pair(future.get(), null);
-                        }
-                        catch(InterruptedException | ExecutionException e)
-                        {
-                            if (e.getCause() instanceof InterpreterException)
-                                return new Pair(null, (InterpreterException) e.getCause());
-
-                            System.out.println(e.getMessage());
-                            System.exit(1);
-                            return null;
-                        }
-                    })
-                    .filter(pair -> pair.program != null || pair.thrownException != null)
-                    .collect(Collectors.toList());
+            IStatement currentStatement = exeStack.pop();
+            return currentStatement.execute(currentState);
         }
-        catch (InterruptedException e) {
-            System.exit(1);
+        catch (StackException e)
+        {
+            throw new InterpreterException("Statements stack is empty!");
         }
-
-        return newProgramsList;
     }
 
     /**
-     * Executes one step for each program in the provided list of program states.
-     * Each program is executed concurrently using a thread pool.
+     * Executes all statements in the program state until the execution stack is empty.
+     * Logs the program state after executing each statement.
      *
-     * @param allPrograms List of program states to execute one step for.
-     * @throws InterpreterException if an error occurs during program execution.
+     * @throws IOException if an I/O error occurs during logging.
+     * @throws InterpreterException if an error occurs during statement execution.
      */
-    public void oneStepForAllPrograms(List<PrgState> allPrograms) throws InterpreterException
+    public void executeAllStatements() throws IOException, InterpreterException
     {
-        List<Callable<PrgState>> callList = this.createListOfCallables(allPrograms);
+        ProgramState currentState = programsRepository.getCurrentProgram();
 
-        List<Pair> newProgramsList = this.executeOneStepForEachProgram(callList);
-
-        for (Pair error : newProgramsList)
-            if (error.thrownException != null)
-                throw error.thrownException;
-
-        allPrograms.addAll(newProgramsList.stream().map(pair -> pair.program).collect(Collectors.toList()));
-        programsRepository.setProgramsList(allPrograms);
-
-        allPrograms.forEach(this.programsRepository::logProgramState);
-    }
-
-    /**
-     * Removes completed programs from the provided list.
-     *
-     * @param allPrograms List of program states.
-     * @return List of program states with completed programs removed.
-     */
-    List<PrgState> removeCompletedPrograms(List<PrgState> allPrograms)
-    {
-        return allPrograms.stream()
-                .filter(program -> program.isNotCompleted())
-                .collect(Collectors.toList());
+        while (!currentState.getStack().isEmpty())
+        {
+            this.executeOneStatement(currentState);
+            this.programsRepository.logProgramState();
+            this.updateHeap();
+        }
     }
 
     /**
@@ -162,14 +93,12 @@ public class Controller {
      */
     private void updateHeap()
     {
-        PrgState firstProgram = this.programsRepository.getAllPrograms().get(0);
+        ProgramState firstProgram = this.programsRepository.getCurrentProgram();
 
         firstProgram.getHeapTable().setContent(
                 this.garbageCollector(
                         this.getAddressesFromSymbolTable(
-                                this.programsRepository.getAllPrograms().stream()
-                                        .map(program -> program.getSymbolTable().getContent().values())
-                                        .collect(Collectors.toList()),
+                                firstProgram.getSymbolTable().getContent().values(),
                                 firstProgram.getHeapTable().getContent()
                         ),
                         firstProgram.getHeapTable().getContent()
@@ -178,23 +107,22 @@ public class Controller {
 
     /**
      *
-     * @param symbolTableValues all values from the symbol table
+     * @param symbolTable all values from the symbol table
      * @param heapTable current program heap table
      * @return list of all used address from heap table
      */
-    private List<Integer> getAddressesFromSymbolTable(List<Collection<IValue>> symbolTableValues, Map<Integer, IValue> heapTable)
+    private List<Integer> getAddressesFromSymbolTable(Collection<IValue> symbolTable, Map<Integer, IValue> heapTable)
     {
         List<Integer> allAddresses = new ArrayList<>();
 
-        symbolTableValues.forEach(symbolTable -> symbolTable.stream()
+        symbolTable.stream()
                 .filter(value -> value instanceof ReferenceValue)
                 .forEach( value -> {
                     while (value instanceof ReferenceValue) {
                         allAddresses.add(((ReferenceValue) value).getHeapAddress());
                         value = heapTable.get(((ReferenceValue) value).getHeapAddress());
                     }
-                })
-        );
+                });
 
         return allAddresses;
     }

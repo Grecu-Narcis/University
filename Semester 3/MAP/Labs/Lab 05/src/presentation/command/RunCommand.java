@@ -3,6 +3,8 @@ package presentation.command;
 import business.Controller;
 import exceptions.InterpreterException;
 
+import java.io.IOException;
+
 public class RunCommand extends Command {
     private final Controller interpreterController;
 
@@ -15,9 +17,9 @@ public class RunCommand extends Command {
     @Override
     public void execute() {
         try {
-            interpreterController.allSteps();
+            interpreterController.executeAllStatements();
         }
-        catch (InterpreterException e)
+        catch (IOException | InterpreterException e)
         {
             System.out.println(e.getMessage());
         }

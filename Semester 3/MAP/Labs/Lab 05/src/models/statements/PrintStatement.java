@@ -2,8 +2,8 @@ package models.statements;
 
 import exceptions.InterpreterException;
 import models.values.IValue;
-import models.utils.MyIList;
-import models.PrgState;
+import models.adts.MyIList;
+import models.ProgramState;
 import models.expressions.IExpression;
 
 public class PrintStatement implements IStatement {
@@ -22,13 +22,12 @@ public class PrintStatement implements IStatement {
      * @throws InterpreterException If there is an error during expression evaluation.
      */
     @Override
-    public PrgState execute(PrgState currentState) throws InterpreterException {
+    public ProgramState execute(ProgramState currentState) throws InterpreterException {
         MyIList<IValue> outputList = currentState.getOutputList();
 
         outputList.add(expression.evaluate(
                 currentState.getSymbolTable(),
-                currentState.getHeapTable(),
-                currentState.getId())
+                currentState.getHeapTable())
         );
 
         return null;

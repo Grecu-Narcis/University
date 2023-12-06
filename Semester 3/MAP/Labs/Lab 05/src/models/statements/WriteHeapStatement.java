@@ -1,13 +1,13 @@
 package models.statements;
 
 import exceptions.InterpreterException;
-import models.PrgState;
+import models.ProgramState;
 import models.expressions.IExpression;
 import models.values.IValue;
 import models.types.ReferenceType;
 import models.values.ReferenceValue;
-import models.utils.MyIDictionary;
-import models.utils.MyIHeap;
+import models.adts.MyIDictionary;
+import models.adts.MyIHeap;
 
 public class WriteHeapStatement implements IStatement {
     private final String variableName;
@@ -31,36 +31,30 @@ public class WriteHeapStatement implements IStatement {
      *                                       pointed by the reference variable.
      */
     @Override
-    public PrgState execute(PrgState currentState) throws InterpreterException {
+    public ProgramState execute(ProgramState currentState) throws InterpreterException {
         MyIDictionary<String, IValue> symbolTable = currentState.getSymbolTable();
         MyIHeap heapTable = currentState.getHeapTable();
 
-        String errorThreadIdentifier = "Thread: " + currentState.getId() + " - ";
-
         // check if variable is defined in symbolTable
         if (!symbolTable.isDefined(variableName))
-            throw new InterpreterException(errorThreadIdentifier +
-                    String.format("Variable %s is not defined!", variableName));
+            throw new InterpreterException(String.format("Variable %s is not defined!", variableName));
 
         // check if the variable type is ReferenceType
         if (!(symbolTable.get(variableName).getType() instanceof ReferenceType))
-            throw new InterpreterException(errorThreadIdentifier +
-                    String.format("Variable %s is not of type reference!", variableName));
+            throw new InterpreterException(String.format("Variable %s is not of type reference!", variableName));
 
         ReferenceValue variableToModify = (ReferenceValue) symbolTable.get(variableName);
 
         // check if the address pointed by variable is defined in heap
         if (!heapTable.isDefined(variableToModify.getHeapAddress()))
-            throw new InterpreterException(errorThreadIdentifier +
-                    String.format("The address referenced by %s is not defined in heap!", variableName));
+            throw new InterpreterException(String.format("The address referenced by %s is not defined in heap!", variableName));
 
-        IValue newValue = expressionToEvaluate.evaluate(symbolTable, heapTable, currentState.getId());
+        IValue newValue = expressionToEvaluate.evaluate(symbolTable, heapTable);
         ReferenceType variableType = (ReferenceType) variableToModify.getType();
 
         // check if type of location pointed by variable is same as type of expression
         if (!newValue.getType().equals(variableType.getInnerType()))
-            throw new InterpreterException(errorThreadIdentifier +
-                    String.format("New value does not have the same type as the one referenced by %s", variableName));
+            throw new InterpreterException(String.format("New value does not have the same type as the one referenced by %s", variableName));
 
         heapTable.updateAddress(variableToModify.getHeapAddress(), newValue);
 

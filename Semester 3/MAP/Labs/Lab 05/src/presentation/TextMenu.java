@@ -1,7 +1,7 @@
 package presentation;
 
-import models.utils.MyDictionary;
-import models.utils.MyIDictionary;
+import models.adts.MyDictionary;
+import models.adts.MyIDictionary;
 import presentation.command.Command;
 
 import java.util.ArrayList;

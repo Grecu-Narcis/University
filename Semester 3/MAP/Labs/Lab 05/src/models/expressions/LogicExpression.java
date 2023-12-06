@@ -5,8 +5,8 @@ import exceptions.InterpreterException;
 import models.types.BoolType;
 import models.values.BoolValue;
 import models.values.IValue;
-import models.utils.MyIDictionary;
-import models.utils.MyIHeap;
+import models.adts.MyIDictionary;
+import models.adts.MyIHeap;
 
 public class LogicExpression implements IExpression {
     private final IExpression firstExpression, secondExpression;
@@ -28,20 +28,16 @@ public class LogicExpression implements IExpression {
      * @throws InterpreterException If the operands are not booleans or if an invalid logical operator is used.
      */
     @Override
-    public IValue evaluate(MyIDictionary<String, IValue> symbolTable, MyIHeap heapTable, int threadID) throws InterpreterException {
-        IValue firstValue = firstExpression.evaluate(symbolTable, heapTable, threadID);
-        IValue secondValue = secondExpression.evaluate(symbolTable, heapTable, threadID);
-
-        String errorThreadIdentifier = "Thread: " + threadID + " - ";
+    public IValue evaluate(MyIDictionary<String, IValue> symbolTable, MyIHeap heapTable) throws InterpreterException {
+        IValue firstValue = firstExpression.evaluate(symbolTable, heapTable);
+        IValue secondValue = secondExpression.evaluate(symbolTable, heapTable);
 
         // check if both operands are of type boolean
         if (!firstValue.getType().equals(new BoolType()))
-            throw new InterpreterException(errorThreadIdentifier +
-                    "First operand is not bool!");
+            throw new InterpreterException("First operand is not bool!");
 
         if (!secondValue.getType().equals(new BoolType()))
-            throw new InterpreterException(errorThreadIdentifier +
-                    "Second operand is not bool!");
+            throw new InterpreterException("Second operand is not bool!");
 
         BoolValue firstOperand = (BoolValue) firstValue;
         BoolValue secondOperand = (BoolValue) secondValue;

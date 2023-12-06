@@ -1,14 +1,14 @@
 package models.statements;
 
 import exceptions.InterpreterException;
-import models.PrgState;
+import models.ProgramState;
 import models.expressions.IExpression;
 import models.types.BoolType;
 import models.values.BoolValue;
 import models.values.IValue;
-import models.utils.MyIDictionary;
-import models.utils.MyIHeap;
-import models.utils.MyIStack;
+import models.adts.MyIDictionary;
+import models.adts.MyIHeap;
+import models.adts.MyIStack;
 
 public class WhileStatement implements IStatement {
     private final IExpression expressionToEvaluate;
@@ -30,19 +30,16 @@ public class WhileStatement implements IStatement {
      * @throws InterpreterException          If there is an error during expression evaluation.
      */
     @Override
-    public PrgState execute(PrgState currentState) throws InterpreterException {
+    public ProgramState execute(ProgramState currentState) throws InterpreterException {
         MyIDictionary<String, IValue> symbolTable = currentState.getSymbolTable();
         MyIHeap heapTable = currentState.getHeapTable();
         MyIStack<IStatement> programStack = currentState.getStack();
 
-        IValue evaluatedExpression = expressionToEvaluate.evaluate(symbolTable, heapTable, currentState.getId());
-
-        String errorThreadIdentifier = "Thread: " + currentState.getId() + " - ";
+        IValue evaluatedExpression = expressionToEvaluate.evaluate(symbolTable, heapTable);
 
         // Check if the expressionToEvaluate evaluates to a boolean
         if (!evaluatedExpression.getType().equals(new BoolType()))
-            throw new InterpreterException(errorThreadIdentifier +
-                    "Expression used in while statement cannot be evaluated as boolean!");
+            throw new InterpreterException("Expression used in while statement cannot be evaluated as boolean!");
 
         BoolValue expressionValue = (BoolValue) evaluatedExpression;
 

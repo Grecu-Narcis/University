@@ -1,8 +1,8 @@
 package models.expressions;
 
 import models.values.IValue;
-import models.utils.MyIDictionary;
-import models.utils.MyIHeap;
+import models.adts.MyIDictionary;
+import models.adts.MyIHeap;
 
 public class VariableExpression implements IExpression {
     private final String id;
@@ -13,7 +13,7 @@ public class VariableExpression implements IExpression {
     }
 
     @Override
-    public IValue evaluate(MyIDictionary<String, IValue> symbolTable, MyIHeap heapTable, int threadID) {
+    public IValue evaluate(MyIDictionary<String, IValue> symbolTable, MyIHeap heapTable) {
         return symbolTable.get(id);
     }
 

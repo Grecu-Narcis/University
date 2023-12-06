@@ -2,10 +2,10 @@ package models.statements;
 
 import exceptions.InterpreterException;
 import models.values.IValue;
-import models.utils.MyIDictionary;
-import models.PrgState;
+import models.adts.MyIDictionary;
+import models.ProgramState;
 import models.expressions.IExpression;
-import models.utils.MyIHeap;
+import models.adts.MyIHeap;
 
 public class AssignStatement implements IStatement {
     private final String variableId;
@@ -26,23 +26,22 @@ public class AssignStatement implements IStatement {
      *                                       does not match the type of the variable.
      */
     @Override
-    public PrgState execute(PrgState currentState) throws InterpreterException {
+    public ProgramState execute(ProgramState currentState) throws InterpreterException {
         MyIDictionary<String, IValue> symbolTable = currentState.getSymbolTable();
         MyIHeap heapTable = currentState.getHeapTable();
 
-        String errorThreadIdentifier = "Thread: " + currentState.getId() + " ";
 
         // Check if the variable is defined in the symbol table
         if (!symbolTable.isDefined(variableId))
-            throw new InterpreterException(errorThreadIdentifier + "Variable " + variableId + " is not defined!");
+            throw new InterpreterException("Variable " + variableId + " is not defined!");
 
-        IValue valueToAssign = expressionToAssign.evaluate(symbolTable, heapTable, currentState.getId());
+        IValue valueToAssign = expressionToAssign.evaluate(symbolTable, heapTable);
 
         IValue variableValue = symbolTable.get(variableId);
 
         // Check if the types of the assigned value and the variable match
         if (!valueToAssign.getType().equals(variableValue.getType()))
-            throw new InterpreterException(errorThreadIdentifier + "Type of variable do not match type of expression!");
+            throw new InterpreterException("Type of variable do not match type of expression!");
 
         // Update the value of the variable in the symbol table
         symbolTable.put(variableId, valueToAssign);

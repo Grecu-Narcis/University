@@ -1,10 +1,10 @@
 package models.statements;
 
-import models.PrgState;
+import models.ProgramState;
 
 public class NOPStatement implements IStatement {
     @Override
-    public PrgState execute(PrgState currentState) {
+    public ProgramState execute(ProgramState currentState) {
         return null;
     }
 

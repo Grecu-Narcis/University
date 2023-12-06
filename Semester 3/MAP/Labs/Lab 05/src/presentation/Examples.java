@@ -219,41 +219,6 @@ public class Examples {
         );
     }
 
-    public static IStatement createThreadExample()
-    {
-        IStatement forkStatement = new ForkStatement(new CompoundStatement(
-                new WriteHeapStatement("a", new ValueExpression(new IntValue(30))),
-                new CompoundStatement(
-                        new AssignStatement("v", new ValueExpression(new IntValue(32))),
-                        new CompoundStatement(
-                                new PrintStatement(new VariableExpression("v")),
-                                new PrintStatement(new ReadHeapExpression(new VariableExpression("a")))
-                        )
-                )
-            )
-        );
-
-        return new CompoundStatement(
-                new VariableDeclarationStatement("v", new IntType()),
-                new CompoundStatement(
-                        new VariableDeclarationStatement("a", new ReferenceType(new IntType())),
-                        new CompoundStatement(
-                                new AssignStatement("v", new ValueExpression(new IntValue(10))),
-                                new CompoundStatement(
-                                        new AllocateStatement("a", new ValueExpression(new IntValue(22))),
-                                        new CompoundStatement(
-                                                forkStatement,
-                                                new CompoundStatement(
-                                                        new PrintStatement(new VariableExpression("v")),
-                                                        new PrintStatement(new ReadHeapExpression(new VariableExpression("a")))
-                                                )
-                                        )
-                                )
-                        )
-                )
-        );
-    }
-
 
     public static List<IStatement> getAllExamples()
     {
@@ -268,7 +233,6 @@ public class Examples {
         allStatements.add(createExample7());
         allStatements.add(createExample8());
         allStatements.add(createExample9());
-        allStatements.add(createThreadExample());
 
         return allStatements;
     }

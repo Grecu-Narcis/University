@@ -1,11 +1,11 @@
 package models.statements;
 
 import exceptions.InterpreterException;
-import models.PrgState;
+import models.ProgramState;
 import models.expressions.IExpression;
 import models.types.*;
-import models.utils.MyIDictionary;
-import models.utils.MyIHeap;
+import models.adts.MyIDictionary;
+import models.adts.MyIHeap;
 import models.values.IValue;
 import models.values.IntValue;
 import models.values.StringValue;
@@ -35,37 +35,31 @@ public class ReadFileStatement implements IStatement {
      * @throws InterpreterException          If the file is not opened or if an error occurs during file reading.
      */
     @Override
-    public PrgState execute(PrgState currentState) throws InterpreterException {
+    public ProgramState execute(ProgramState currentState) throws InterpreterException {
         MyIDictionary<String, IValue> symbolTable = currentState.getSymbolTable();
         MyIDictionary<String, BufferedReader> fileTable = currentState.getFileTable();
         MyIHeap heapTable = currentState.getHeapTable();
 
-        String errorThreadIdentifier = "Thread: " + currentState.getId() + " - ";
-
         // Check if the variable to update is defined in the symbol table and evaluates to IntType
         if (!symbolTable.isDefined(variableId))
-            throw new InterpreterException(errorThreadIdentifier +
-                    String.format("Variable %s is not defined!", variableId));
+            throw new InterpreterException(String.format("Variable %s is not defined!", variableId));
 
         IValue variableValue = symbolTable.get(variableId);
 
         if (!variableValue.getType().equals(new IntType()))
-            throw new InterpreterException(errorThreadIdentifier +
-                    String.format("Variable %s does not evaluate to IntType", variableId));
+            throw new InterpreterException(String.format("Variable %s does not evaluate to IntType", variableId));
 
-        IValue fileNameValue = fileNameExpression.evaluate(symbolTable, heapTable, currentState.getId());
+        IValue fileNameValue = fileNameExpression.evaluate(symbolTable, heapTable);
 
         if (!fileNameValue.getType().equals(new StringType()))
-            throw new InterpreterException(errorThreadIdentifier +
-                    String.format("File %s is not opened!", fileNameValue));
+            throw new InterpreterException(String.format("File %s is not opened!", fileNameValue));
 
         StringValue fileName = (StringValue) fileNameValue;
         BufferedReader openedFile = fileTable.get(fileName.getValue());
 
         // Check if the file is open for read
         if (openedFile == null)
-            throw new InterpreterException(errorThreadIdentifier +
-                    String.format("File %s is not opened!", fileName));
+            throw new InterpreterException(String.format("File %s is not opened!", fileName));
 
         try {
             String newValue = openedFile.readLine().strip();
@@ -84,8 +78,7 @@ public class ReadFileStatement implements IStatement {
 
         catch (IOException e)
         {
-            throw new InterpreterException(errorThreadIdentifier +
-                    "Failed to read from file " + fileName.getValue());
+            throw new InterpreterException("Failed to read from file " + fileName.getValue());
         }
 
         return null;

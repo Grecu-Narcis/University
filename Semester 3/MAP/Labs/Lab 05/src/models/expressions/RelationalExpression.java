@@ -5,8 +5,8 @@ import models.values.BoolValue;
 import models.values.IValue;
 import models.types.IntType;
 import models.values.IntValue;
-import models.utils.MyIDictionary;
-import models.utils.MyIHeap;
+import models.adts.MyIDictionary;
+import models.adts.MyIHeap;
 
 public class RelationalExpression implements IExpression {
     private final IExpression firstExpression, secondExpression;
@@ -28,20 +28,16 @@ public class RelationalExpression implements IExpression {
      * @throws InterpreterException If the operands do not evaluate to integers or if an invalid comparison operator is used.
      */
     @Override
-    public IValue evaluate(MyIDictionary<String, IValue> symbolTable, MyIHeap heapTable, int threadID) throws InterpreterException {
-        IValue firstValue = this.firstExpression.evaluate(symbolTable, heapTable, threadID);
-        IValue secondValue = this.secondExpression.evaluate(symbolTable, heapTable, threadID);
-
-        String errorThreadIdentifier = "Thread: " + threadID + " - ";
+    public IValue evaluate(MyIDictionary<String, IValue> symbolTable, MyIHeap heapTable) throws InterpreterException {
+        IValue firstValue = this.firstExpression.evaluate(symbolTable, heapTable);
+        IValue secondValue = this.secondExpression.evaluate(symbolTable, heapTable);
 
         // Check if the types of the operands are integers
         if (!firstValue.getType().equals(new IntType()))
-            throw new InterpreterException(errorThreadIdentifier +
-                    "First operand does not evaluate to an IntType!");
+            throw new InterpreterException("First operand does not evaluate to an IntType!");
 
         if (!secondValue.getType().equals(new IntType()))
-            throw new InterpreterException(errorThreadIdentifier +
-                    "Second operand does not evaluate to an IntType!");
+            throw new InterpreterException("Second operand does not evaluate to an IntType!");
 
         // Extract the integer values of the operands
         int firstInteger = ((IntValue) firstValue).getValue();
@@ -55,8 +51,7 @@ public class RelationalExpression implements IExpression {
             case "!=" -> new BoolValue(firstInteger != secondInteger);
             case ">" -> new BoolValue(firstInteger > secondInteger);
             case ">=" -> new BoolValue(firstInteger >= secondInteger);
-            default -> throw new InterpreterException(errorThreadIdentifier +
-                    "Invalid comparison operand!");
+            default -> throw new InterpreterException("Invalid comparison operand!");
         };
     }
 

@@ -1,0 +1,114 @@
+package models;
+
+import exceptions.InterpreterException;
+import exceptions.StackException;
+import models.statements.CompoundStatement;
+import models.statements.IStatement;
+import models.values.IValue;
+import models.adts.*;
+
+import java.io.BufferedReader;
+import java.util.*;
+
+public class ProgramState {
+    private MyIStack<IStatement> exeStack;
+    private MyIDictionary<String, IValue> symbolTable;
+    private MyIList<IValue> outputList;
+    private final MyIDictionary<String, BufferedReader> fileTable;
+    private final MyIHeap heapTable;
+
+    public ProgramState(IStatement program) {
+        this.exeStack = new MyStack<>();
+        this.symbolTable = new MyDictionary<>();
+        this.outputList = new MyList<>();
+        this.fileTable = new MyDictionary<>();
+        this.heapTable = new MyHeap();
+        this.exeStack.push(program);
+    }
+
+    public ProgramState(MyIStack<IStatement> exeStack, MyIDictionary<String, IValue> symbolTable,
+                        MyIList<IValue> outputList, MyIDictionary<String, BufferedReader> fileTable, MyIHeap heapTable)
+    {
+        this.exeStack = exeStack;
+        this.symbolTable = symbolTable;
+        this.outputList = outputList;
+        this.fileTable = fileTable;
+        this.heapTable = heapTable;
+    }
+
+
+    public MyIStack<IStatement> getStack()
+    {
+        return this.exeStack;
+    }
+
+    public void setExeStack(MyIStack<IStatement> newStack)
+    {
+        this.exeStack = newStack;
+    }
+
+    public MyIDictionary<String, IValue> getSymbolTable()
+    {
+        return this.symbolTable;
+    }
+
+    public void setSymbolTable(MyIDictionary<String, IValue> newSymbolTable)
+    {
+        this.symbolTable = newSymbolTable;
+    }
+
+    public MyIList<IValue> getOutputList()
+    {
+        return this.outputList;
+    }
+
+    public MyIDictionary<String, BufferedReader> getFileTable()
+    {
+        return this.fileTable;
+    }
+    public void setOutputList(MyList<IValue> newOutputList)
+    {
+        this.outputList = newOutputList;
+    }
+
+    public MyIHeap getHeapTable()
+    {
+        return this.heapTable;
+    }
+
+    public List<IStatement> getStackStatements() {
+        ArrayList<IStatement> stackStatements = new ArrayList<>();
+
+        if (exeStack.isEmpty())
+            return stackStatements;
+
+        Stack<IStatement> statements = new Stack<>();
+        for (IStatement currentStatement : this.exeStack.getStackAsList())
+            statements.push(currentStatement);
+
+        while (!statements.isEmpty())
+        {
+            IStatement topStatement = statements.pop();
+            if (topStatement instanceof CompoundStatement currentStatement)
+            {
+                statements.push(currentStatement.getSecondStatement());
+                statements.push(currentStatement.getFirstStatement());
+            }
+
+            else
+                stackStatements.add(topStatement);
+        }
+
+        return stackStatements;
+    }
+
+    @Override
+    public String toString() {
+        return "PrgState{" +
+                "exeStack=" + exeStack +
+                ", symbolTable=" + symbolTable +
+                ", outputList=" + outputList +
+                ", FileTable=" + fileTable +
+                '}';
+    }
+}

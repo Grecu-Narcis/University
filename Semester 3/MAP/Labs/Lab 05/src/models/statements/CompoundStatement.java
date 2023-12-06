@@ -1,8 +1,8 @@
 package models.statements;
 
 import exceptions.InterpreterException;
-import models.utils.MyIStack;
-import models.PrgState;
+import models.adts.MyIStack;
+import models.ProgramState;
 
 public class CompoundStatement implements IStatement {
     private final IStatement firstStatement, secondStatement;
@@ -24,7 +24,7 @@ public class CompoundStatement implements IStatement {
     }
 
     @Override
-    public PrgState execute(PrgState currentState) throws InterpreterException {
+    public ProgramState execute(ProgramState currentState) throws InterpreterException {
         MyIStack<IStatement> exeStack = currentState.getStack();
 
         exeStack.push(secondStatement);

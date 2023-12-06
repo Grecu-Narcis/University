@@ -1,8 +1,8 @@
 package models.statements;
 
 import exceptions.InterpreterException;
-import models.PrgState;
+import models.ProgramState;
 
 public interface IStatement {
-    PrgState execute(PrgState currentState) throws InterpreterException;
+    ProgramState execute(ProgramState currentState) throws InterpreterException;
 }

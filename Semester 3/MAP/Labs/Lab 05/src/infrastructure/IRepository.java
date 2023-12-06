@@ -1,13 +1,11 @@
 package infrastructure;
 
-import models.PrgState;
+import models.ProgramState;
 
 import java.io.IOException;
-import java.util.List;
 
 public interface IRepository {
-    void addProgram(PrgState programToAdd);
-    List<PrgState> getAllPrograms();
-    void setProgramsList(List<PrgState> newPrograms);
-    void logProgramState(PrgState currentProgram);
+    void addProgram(ProgramState programToAdd);
+    ProgramState getCurrentProgram();
+    void logProgramState() throws IOException;
 }

@@ -6,7 +6,7 @@ import models.expressions.IExpression;
 import models.types.BoolType;
 import models.values.BoolValue;
 import models.values.IValue;
-import models.utils.MyIStack;
+import models.adts.MyIStack;
 
 public class IfStatement implements IStatement {
     private final IExpression expressionToEvaluate;
@@ -29,21 +29,18 @@ public class IfStatement implements IStatement {
      * @throws InterpreterException If the expressionToEvaluate does not evaluate to a boolean.
      */
     @Override
-    public PrgState execute(PrgState currentState) throws InterpreterException {
+    public ProgramState execute(ProgramState currentState) throws InterpreterException {
         MyIStack<IStatement> exeStack = currentState.getStack();
 
         // Evaluate the expressionToEvaluate to obtain the condition value
         IValue conditionToEvaluate = expressionToEvaluate.evaluate(
                 currentState.getSymbolTable(),
-                currentState.getHeapTable(),
-                currentState.getId());
+                currentState.getHeapTable());
 
-        String errorThreadIdentifier = "Thread: " + currentState.getId() + " - ";
 
         // Check if the expressionToEvaluate evaluates to a boolean
         if (!conditionToEvaluate.getType().equals(new BoolType()))
-            throw new InterpreterException(errorThreadIdentifier +
-                    "Conditional expression is not boolean!");
+            throw new InterpreterException("Conditional expression is not boolean!");
 
         BoolValue conditionValue = (BoolValue) conditionToEvaluate;
 

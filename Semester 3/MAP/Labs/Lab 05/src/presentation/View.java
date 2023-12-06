@@ -3,9 +3,8 @@ package presentation;
 import business.Controller;
 import infrastructure.IRepository;
 import infrastructure.ProgramsRepository;
-import models.PrgState;
+import models.ProgramState;
 import models.statements.IStatement;
-import presentation.command.Command;
 import presentation.command.ExitCommand;
 import presentation.command.RunCommand;
 
@@ -33,7 +32,7 @@ public class View {
 
         for (IStatement currentStatement : Examples.getAllExamples())
         {
-            PrgState currentProgram = new PrgState(currentStatement);
+            ProgramState currentProgram = new ProgramState(currentStatement);
             IRepository repository = new ProgramsRepository("log.txt");
             Controller controller = new Controller(repository);
             controller.addProgram(currentProgram);
