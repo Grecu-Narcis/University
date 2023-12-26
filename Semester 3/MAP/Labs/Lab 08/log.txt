@@ -1,0 +1,192 @@
+Id=2
+ExeStack:
+int v
+Ref(int) a
+v=10
+new(a, 22)
+Fork(WriteHeap(a, 30); v=32; print(v); print(ReadHeap(a)))
+print(v)
+print(ReadHeap(a))
+
+SymTable:
+
+Output:
+
+File Table:
+
+Heap Table:
+
+Id=2
+ExeStack:
+Ref(int) a
+v=10
+new(a, 22)
+Fork(WriteHeap(a, 30); v=32; print(v); print(ReadHeap(a)))
+print(v)
+print(ReadHeap(a))
+
+SymTable:
+v = 0
+
+Output:
+
+File Table:
+
+Heap Table:
+
+Id=2
+ExeStack:
+Ref(int) a
+v=10
+new(a, 22)
+Fork(WriteHeap(a, 30); v=32; print(v); print(ReadHeap(a)))
+print(v)
+print(ReadHeap(a))
+
+SymTable:
+v = 0
+
+Output:
+
+File Table:
+
+Heap Table:
+
+Id=2
+ExeStack:
+v=10
+new(a, 22)
+Fork(WriteHeap(a, 30); v=32; print(v); print(ReadHeap(a)))
+print(v)
+print(ReadHeap(a))
+
+SymTable:
+a = (0, int)
+v = 0
+
+Output:
+
+File Table:
+
+Heap Table:
+
+Id=2
+ExeStack:
+v=10
+new(a, 22)
+Fork(WriteHeap(a, 30); v=32; print(v); print(ReadHeap(a)))
+print(v)
+print(ReadHeap(a))
+
+SymTable:
+a = (0, int)
+v = 0
+
+Output:
+
+File Table:
+
+Heap Table:
+
+Id=2
+ExeStack:
+new(a, 22)
+Fork(WriteHeap(a, 30); v=32; print(v); print(ReadHeap(a)))
+print(v)
+print(ReadHeap(a))
+
+SymTable:
+a = (0, int)
+v = 10
+
+Output:
+
+File Table:
+
+Heap Table:
+
+Id=2
+ExeStack:
+new(a, 22)
+Fork(WriteHeap(a, 30); v=32; print(v); print(ReadHeap(a)))
+print(v)
+print(ReadHeap(a))
+
+SymTable:
+a = (0, int)
+v = 10
+
+Output:
+
+File Table:
+
+Heap Table:
+
+Id=2
+ExeStack:
+Fork(WriteHeap(a, 30); v=32; print(v); print(ReadHeap(a)))
+print(v)
+print(ReadHeap(a))
+
+SymTable:
+a = (1, int)
+v = 10
+
+Output:
+
+File Table:
+
+Heap Table:
+1 -> 22
+
+Id=2
+ExeStack:
+Fork(WriteHeap(a, 30); v=32; print(v); print(ReadHeap(a)))
+print(v)
+print(ReadHeap(a))
+
+SymTable:
+a = (1, int)
+v = 10
+
+Output:
+
+File Table:
+
+Heap Table:
+1 -> 22
+
+Id=2
+ExeStack:
+print(v)
+print(ReadHeap(a))
+
+SymTable:
+a = (1, int)
+v = 10
+
+Output:
+
+File Table:
+
+Heap Table:
+1 -> 22
+
+Id=3
+ExeStack:
+WriteHeap(a, 30)
+v=32
+print(v)
+print(ReadHeap(a))
+
+SymTable:
+a = (1, int)
+v = 10
+
+Output:
+
+File Table:
+
+Heap Table:
+1 -> 22
+

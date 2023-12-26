@@ -1,0 +1,88 @@
+Id=1
+ExeStack:
+int a
+while(true) {bool b}
+int b
+
+SymTable:
+
+Output:
+
+File Table:
+
+Heap Table:
+
+Id=1
+ExeStack:
+while(true) {bool b}
+int b
+
+SymTable:
+a = 0
+
+Output:
+
+File Table:
+
+Heap Table:
+
+Id=1
+ExeStack:
+while(true) {bool b}
+int b
+
+SymTable:
+a = 0
+
+Output:
+
+File Table:
+
+Heap Table:
+
+Id=1
+ExeStack:
+bool b
+while(true) {bool b}
+int b
+
+SymTable:
+a = 0
+
+Output:
+
+File Table:
+
+Heap Table:
+
+Id=1
+ExeStack:
+while(true) {bool b}
+int b
+
+SymTable:
+a = 0
+b = false
+
+Output:
+
+File Table:
+
+Heap Table:
+
+Id=1
+ExeStack:
+bool b
+while(true) {bool b}
+int b
+
+SymTable:
+a = 0
+b = false
+
+Output:
+
+File Table:
+
+Heap Table:
+
