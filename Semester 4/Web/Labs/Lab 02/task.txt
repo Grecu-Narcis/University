@@ -1,3 +1,0 @@
-8. Write a web page which contains a div with a background image. When the mouse is over the div, the div should flip (turn over in 3D space; rotate around the OY axis in 3D).
-
-21. Write a web page which contains 4 divs one inside each other (the first div contains inside it all the other 3 divs, the second div contains inside 2 divs, and the third div contains the smallest div inside it). Each div is colored (background color) with different colors. When the mouse is over the inner div (i.e. the smallest one), all divs should change their colors.
