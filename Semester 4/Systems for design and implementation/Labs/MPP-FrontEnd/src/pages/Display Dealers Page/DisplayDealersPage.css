@@ -1,0 +1,53 @@
+.dealers-page {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 70%;
+    margin: 0 15%;
+}
+
+.search {
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    top: 12px;
+    left: 10px;
+    font-size: 14pt;
+    color: #1A5276;
+    font-weight: 200;
+}
+
+.search-bar {
+    width: 100%;
+    padding: 12px 0;
+    text-indent: 40px;
+    background-color: #F2F4F4;
+    border-radius: 10px;
+    color: #1A5276;
+    font-size: 12pt;
+    border: none;
+}
+
+.search-bar::placeholder {
+    color: #1A5276;
+}
+
+.dealers-list {
+    width: 100%;
+}
+
+.infinite-scroll-dealers {
+    width: 100%;
+}
+
+.dealers-loader {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.not-found-message {
+    margin: 1rem 0;
+}

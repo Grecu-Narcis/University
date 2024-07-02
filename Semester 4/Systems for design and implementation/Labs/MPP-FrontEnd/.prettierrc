@@ -1,0 +1,21 @@
+{
+    "trailingComma": "all",
+    "jsxSingleQuote": true,
+    "tabWidth": 4,
+    "singleQuote": true,
+    "bracketSpacing": true,
+    "useTabs": false,
+    "endOfLine": "auto",
+    "arrowParens": "always",
+    "semi": true,
+    "singleAttributePerLine": false,
+    "printWidth": 140,
+    "max-line-length": [
+      true,
+      {
+        "limit": 140,
+        "ignore-pattern": "^import |^export {(.*?)}"
+      }
+    ]
+
+}

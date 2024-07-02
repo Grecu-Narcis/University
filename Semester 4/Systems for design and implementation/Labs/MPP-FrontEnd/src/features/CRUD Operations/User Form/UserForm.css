@@ -1,0 +1,32 @@
+.form-div{
+    /* box-shadow: 0px 0px 1px #61233563; */
+    padding: 1em;
+    border-radius: 0;
+
+    width: 30%;
+    height: 50%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-button {
+    align-self: center;
+}
+
+#profile-image {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .form-div {
+        width: 60%;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+    .form-div {
+        width: 40%;
+    }
+}

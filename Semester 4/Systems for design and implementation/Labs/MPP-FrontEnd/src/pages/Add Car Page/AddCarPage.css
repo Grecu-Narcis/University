@@ -1,0 +1,16 @@
+.car-form {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    height: 50%;
+}
+
+.car-details-options {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.car-add-button {
+    margin: 1rem 0;
+}

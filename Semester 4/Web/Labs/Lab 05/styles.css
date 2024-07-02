@@ -1,0 +1,12 @@
+.hidden {
+    display: none;
+}
+
+.displayed {
+    display: block;
+}
+
+.display-row {
+    display: flex;
+    justify-content: center;
+}

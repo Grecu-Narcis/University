@@ -1,0 +1,206 @@
+.main-div-landing {
+    margin: 0 15%;
+    flex: 1;
+}
+
+.welcome-header {
+    margin-top: 2rem;
+    aspect-ratio: 2/0.8;
+
+    background-image: url('../../../assets/background.jpg');
+    background-size: cover;
+    background-position: center;
+    
+    border-radius: 10px;
+
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: end;
+    align-items: flex-start;
+}
+
+.welcome-message {
+    color: white;
+    font-size: 35pt;
+    
+    font-weight: 800;
+    font-family: 'Montserrat', sans-serif;
+
+    margin: 2rem;
+    margin-bottom: 0;
+}
+
+.start-renting-button {
+    margin: 2rem;
+}
+
+.landing-title {
+    margin-top: 2.5rem;
+
+    font-weight: 900;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 25pt;
+}
+
+.landing-description {
+    margin-top: 0.6rem;
+    margin-right: 20%;
+}
+
+@media (min-width: 1024px) and (max-width: 1300px) {
+    .main-div-landing {
+        margin: 0 15%;
+    }
+
+    .welcome-message {
+        font-size: 26pt;
+    }
+
+    .landing-title {
+        font-size: 20pt;
+    }
+}
+
+@media (min-width: 881px) and (max-width: 1024px) {
+    .main-div-landing {
+        margin: 0 10%;
+    }
+
+    .welcome-header {
+        aspect-ratio: 2 / 0.9;
+    }
+
+    .welcome-message {
+        font-size: 24pt;
+    }
+
+    .start-renting-button {
+        margin-top: 1.5rem;
+    }
+
+    .landing-title {
+        font-size: 20pt;
+    }
+}
+
+@media (min-width: 721px) and (max-width: 880px) {
+    .main-div-landing {
+        margin: 0 10%;
+    }
+
+    .welcome-header {
+        aspect-ratio: 2 / 0.9;
+    }
+
+    .welcome-message {
+        font-size: 21pt;
+    }
+
+    .start-renting-button {
+        margin-top: 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    .landing-title {
+        font-size: 18pt;
+    }
+
+    .landing-description {
+        margin-right: 10%;
+    }
+}
+
+@media (min-width: 561px) and (max-width: 720px) {
+    .main-div-landing {
+        margin: 0 10%;
+    }
+
+    .welcome-header {
+        aspect-ratio: 2 / 0.9;
+    }
+
+    .welcome-message {
+        font-size: 16pt;
+    }
+
+    .start-renting-button {
+        margin: 0.8rem 2rem;
+        font-size: 0.8rem;
+        height: 35px;
+        padding: 0 1rem;
+    }
+
+    .landing-title {
+        font-size: 16pt;
+    }
+
+    .landing-description {
+        font-size: 13pt;
+    }
+}
+
+@media (min-width: 441px) and (max-width: 560px) {
+    .main-div-landing {
+        margin: 0 7%;
+    }
+
+    .welcome-header {
+        margin-top: 5%;
+        aspect-ratio: 2 / 1;
+    }
+
+    .welcome-message {
+        font-size: 13pt;
+    }
+
+    .start-renting-button {
+        margin: 0.5rem 2rem;
+        font-size: 0.7rem;
+        height: 30px;
+        padding: 0 0.7rem;
+    }
+
+    .landing-title {
+        font-size: 13pt;
+    }
+
+    .landing-description {
+        font-size: 10pt;
+        margin-right: 5%;
+    }
+}
+
+@media (max-width: 440px) {
+    .main-div-landing {
+        margin: 0 5%;
+    }
+
+    .welcome-header {
+        margin-top: 5%;
+        aspect-ratio: 2 / 1;
+    }
+
+    .welcome-message {
+        font-size: 12pt;
+
+        margin: 0 1rem;
+    }
+
+    .start-renting-button {
+        margin: 0.5rem 1rem;
+        font-size: 0.6rem;
+        font-weight: bold;
+        height: 28px;
+        padding: 0 0.6rem;
+    }
+
+    .landing-title {
+        font-size: 12pt;
+    }
+
+    .landing-description {
+        font-size: 10pt;
+        margin-right: 5%;
+    }
+}

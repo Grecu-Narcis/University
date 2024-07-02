@@ -1,0 +1,42 @@
+.contact-form {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-details {
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+}
+
+.user-details input {
+    width: 45%;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+.message-box {
+    margin: 1rem 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+textarea {
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 5px;
+    resize: none;
+    width: 50%;
+    aspect-ratio: 1/0.3;
+}
+
+.submit-contact {
+    margin: 0 0 1rem 0;
+}

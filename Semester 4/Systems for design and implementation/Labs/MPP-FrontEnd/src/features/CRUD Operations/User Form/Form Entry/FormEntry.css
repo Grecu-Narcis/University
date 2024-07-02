@@ -1,0 +1,20 @@
+.form-entry {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.6rem;
+}
+
+.form-label {
+    padding: 0.2em;
+    font-size: 12pt;
+    font-weight: 550;
+}
+
+
+.form-input {
+    padding: 12px;
+    border: 1px solid #e5e7e9;
+    border-radius: 5px;
+    background-color: white;
+    /* background-color: #f7f7f7; */
+}

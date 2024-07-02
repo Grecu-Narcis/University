@@ -1,0 +1,14 @@
+#main-div {
+    color: red;
+    background-image: url("dog.jpg");
+    background-size: cover;
+    width: 400px;
+    height: 400px;
+    transition: transform 1s ease;
+    transition: border-radius 1s ease;
+}
+
+#main-div:hover {
+    transform: rotateY(180deg);
+    border-radius: 50%;
+}

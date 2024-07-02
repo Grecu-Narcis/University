@@ -1,0 +1,10 @@
+<div class="main-content">
+    <h1>Choose a category</h1>
+    <select [(ngModel)]="selectedCategory">
+        @for (category of categoriesList; track $index) {
+            <option value="{{category}}">{{category}}</option>
+        }
+    </select>
+    
+    <button (click)="onSelectCategory()" class="submit-button">Submit</button>
+</div>
