@@ -1,0 +1,1 @@
+export const endPointUrl = 'http://3.68.166.52:8443'

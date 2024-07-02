@@ -1,0 +1,64 @@
+.login-welcome-message {
+    font-size: 20pt;
+    font-weight: bold;
+    padding-bottom: 0.8rem;
+}
+
+.login-message {
+    padding-bottom: 1rem;
+}
+
+.login-wrapper {
+    width: 30%;
+}
+
+.login-loader-wrapper {
+    display: flex;
+    justify-content: center;
+
+    min-height: 30px;
+    margin-top: 1rem;
+}
+
+.error-message {
+    margin-top: 0.8rem;
+    font-size: 11pt;
+    display: flex;
+    justify-content: center;
+}
+
+@media (min-width: 851px) and (max-width: 1024px) {
+    .login-wrapper {
+        width: 35%;
+    }
+}
+
+@media (min-width: 721px) and (max-width: 850px) {
+    .login-wrapper {
+        width: 40%;
+    }
+}
+
+@media (min-width: 561px) and (max-width: 720px) {
+    .login-wrapper {
+        width: 50%;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 560px) {
+    .login-wrapper {
+        width: 60%;
+    }
+}
+
+@media (min-width: 401px) and (max-width: 480px) {
+    .login-wrapper {
+        width: 70%;
+    }
+}
+
+@media (max-width: 400px) {
+    .login-wrapper {
+        width: 75%;
+    }
+}

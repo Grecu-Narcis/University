@@ -1,0 +1,29 @@
+<div id="products-list">
+    <table id="products">
+        <thead>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Edit</th>
+            <th>Add</th>
+        </thead>
+        <tbody id="products-body">
+            @for (product of pageProducts; track product.productId)
+             {   <tr>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.price }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.category }}</td>
+                    <td><button (click)="handleOnClickEdit(product)" [disabled]="isDisabled(product)">Edit</button></td>
+                    <td><button (click)="handleOnClickAdd(product)" [disabled]="isDisabled(product)">Add</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div id="options">
+        <button [disabled]="isPrevDisabled" (click)="onClickPrev()">Previous</button>
+        <button [disabled]="isNextDisabled" (click)="onClickNext()">Next</button>
+    </div>
+</div>

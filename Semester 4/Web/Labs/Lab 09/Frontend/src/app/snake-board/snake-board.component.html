@@ -1,0 +1,28 @@
+<button class="logout" (click)="handleLogout()">Logout</button>
+<div class="lives">{{this.lives}}❤️</div>
+
+<div class="main-content">
+    <div class="score-content">Score: {{this.snake.length}}</div>
+
+    <div class="board">
+        @for (i of indexes; track $index) {
+            @for (j of indexes; track $index) {
+                @if (isSnakeCell(i, j)) {
+                    <div class="cell snake"></div>
+                }
+
+                @else if (isFoodCell(i, j)) {
+                    <div class="cell food"></div>
+                }
+
+                @else if (isObstacleCell(i, j)) {
+                    <div class="cell obstacle"></div>
+                }
+    
+                @else {
+                    <div class="cell empty"></div>
+                }
+            }
+        }
+    </div>
+</div>

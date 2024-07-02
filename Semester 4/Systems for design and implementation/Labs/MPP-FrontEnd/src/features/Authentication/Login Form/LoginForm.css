@@ -1,0 +1,18 @@
+.login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.register-link {
+    padding: 0 10px;
+    align-self: center;
+    color: #5D6D7E;
+    font-size: 11pt;
+}
+
+.login-options {
+    display: flex;
+    flex-direction: column;
+}

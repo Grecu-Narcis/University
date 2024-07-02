@@ -1,0 +1,40 @@
+#div1 {
+    width: 200px;
+    height: 200px;
+    margin: 10px;
+    background-color: red;
+}
+
+#div2 {
+    width: 150px;
+    height: 150px;
+    background-color: chartreuse;
+}
+
+#div3 {
+    width: 100px;
+    height: 100px;
+    background-color: yellow;
+}
+
+#div4 {
+    width: 50px;
+    height: 50px;
+    background-color: blue;
+}
+
+#div1:has(#div4:hover) {
+    background-color: aquamarine;
+}
+
+#div2:has(#div4:hover) {
+    background-color: #8E44AD;
+}
+
+#div3:has(#div4:hover) {
+    background-color: #82E0AA;
+}
+
+#div4:hover {
+    background-color: #29B6F6;
+}

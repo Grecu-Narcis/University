@@ -1,0 +1,41 @@
+.cars-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.infinite-scroll-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.distance-button {
+    width: fit-content;
+    margin: 0;
+}
+
+.distance-wrapper {
+    margin-bottom: 1rem;
+
+    display: flex;
+    justify-content: center;
+}
+
+.contact-wrapper {
+    margin-top: 2rem;
+    font-weight: bold;
+    font-size: 20pt;
+}
+
+@media screen and (max-width: 768px) {
+    .infinite-scroll-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .infinite-scroll-grid {
+        grid-template-columns: 1fr;
+    }
+}

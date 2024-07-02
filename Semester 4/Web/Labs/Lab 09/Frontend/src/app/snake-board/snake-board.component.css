@@ -1,0 +1,51 @@
+.cell {
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+}
+
+.score-content {
+    font-size: 18pt;
+    margin-bottom: 10px;
+}
+
+.snake {
+    background-color: #3498DB;
+}
+
+.food {
+    background-color: green;
+}
+
+.obstacle {
+    background-color: red;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(20, 30px);
+    grid-template-rows: repeat(20, 30px);
+
+    justify-content: center;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    height: 100%;
+}
+
+.logout {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.lives {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}

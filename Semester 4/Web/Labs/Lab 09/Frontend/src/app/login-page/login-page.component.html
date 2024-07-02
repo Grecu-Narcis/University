@@ -1,0 +1,12 @@
+<div class="login-wrapper">
+    <div class="login-message">Login here</div>
+    <form class="login-form">
+        <label for="username">Username</label>
+        <input name="username" [(ngModel)]="username" />
+        
+        <label for="password">Password</label>
+        <input name="password" type="password" [(ngModel)]="password" />
+    </form>  
+    
+    <button class="login-button" (click)="handleLogin()">Login</button>
+</div>

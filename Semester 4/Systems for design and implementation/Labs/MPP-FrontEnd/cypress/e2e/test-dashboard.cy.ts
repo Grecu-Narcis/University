@@ -1,0 +1,24 @@
+it('test-dashboard', function() {
+  cy.visit('http://localhost:3000/login');
+  cy.get(':nth-child(1) > [data-testid="form-entry-input"]').clear();
+  cy.get(':nth-child(1) > [data-testid="form-entry-input"]').type('narcis@gmail.com');
+  cy.get(':nth-child(2) > [data-testid="form-entry-input"]').clear();
+  cy.get(':nth-child(2) > [data-testid="form-entry-input"]').type('cocos123');
+  cy.get('.login-options > [data-testid="button-test-id"]').click();
+  cy.get('[href="/dashboard"]').click();
+  cy.get('.option-users').should('have.text', 'Users');
+  cy.get('.admin-dashboard').click();
+  cy.get('.main-page-container').click();
+  cy.get('.navbar').click();
+  cy.get('.infinite-scroll-component > :nth-child(1)').click();
+  cy.get('.infinite-scroll-component > :nth-child(4)').click();
+  cy.get('.infinite-scroll-component > :nth-child(3)').click();
+  cy.get('.infinite-scroll-component > :nth-child(3)').click();
+  cy.get('.infinite-scroll-component').should('be.visible');
+  cy.get('[data-testid="cars-view"]').click();
+  cy.get('.infinite-scroll-component').should('be.visible');
+  cy.get('[data-testid="chart-view"] > .option-chart').click();
+  cy.get('[data-testid="chart-wrapper"]').click();
+  cy.get('.side-menu > :nth-child(4)').click();
+  cy.get('[data-testid="register-form-id"]').should('be.visible');
+});
