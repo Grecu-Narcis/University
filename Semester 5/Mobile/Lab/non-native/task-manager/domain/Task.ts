@@ -1,7 +1,7 @@
 import { TaskPriority } from "./TaskPriority";
 
 export interface Task {
-    taskId: string;
+    taskId: number;
     title: string;
     description: string;
     dueDate: Date;

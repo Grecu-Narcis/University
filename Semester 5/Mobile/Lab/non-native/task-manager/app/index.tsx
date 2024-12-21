@@ -1,21 +1,13 @@
 import CustomButton from "@/components/CustomButton";
 import TasksList from "@/components/TasksList";
 import { TaskContext } from "@/context/TasksContext";
-import { Link, useNavigation, useRouter } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 import { useContext } from "react";
-import {
-  Alert,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
   const router = useRouter();
-  const navigation = useNavigation();
 
   const taskContext = useContext(TaskContext)!;
 
@@ -41,9 +33,11 @@ export default function Index() {
           Tasks
         </Text>
 
-        {/* <TextInput style={styles.input} placeholder="Search tasks" /> */}
-
-        <TasksList tasks={taskContext.tasks} />
+        {taskContext.tasks.length == 0 ? (
+          <Text>No task found</Text>
+        ) : (
+          <TasksList tasks={taskContext.tasks} />
+        )}
 
         <View style={{ marginTop: 16 }}>
           <CustomButton

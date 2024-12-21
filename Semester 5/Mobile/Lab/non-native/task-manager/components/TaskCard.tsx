@@ -4,6 +4,7 @@ import { CheckBox } from "@rneui/base";
 import { useContext, useState } from "react";
 import { TaskContext } from "@/context/TasksContext";
 import { useRouter } from "expo-router";
+import { showMessage } from "react-native-flash-message";
 
 type TaskCardProps = {
   task: Task;
@@ -24,7 +25,19 @@ export default function TaskCard({ task }: TaskCardProps) {
   const updateStatus = () =>
     taskContext.updateTask({ ...task, isCompleted: !task.isCompleted });
 
-  const deleteTask = () => taskContext.deleteTask(task.taskId);
+  const deleteTask = () => {
+    try {
+      taskContext.deleteTask(task.taskId);
+    } catch (error) {
+      console.error((error as Error).message);
+
+      showMessage({
+        message: (error as Error).message,
+        type: "warning",
+        duration: 2000,
+      });
+    }
+  };
 
   const createConfirmDialog = () => {
     Alert.alert(
@@ -63,8 +76,6 @@ export default function TaskCard({ task }: TaskCardProps) {
       <View style={styles.row}>
         <Pressable
           onPress={() => {
-            console.log(task.taskId);
-
             router.navigate(`./edit/${task.taskId}`);
           }}
           style={styles.editButton}

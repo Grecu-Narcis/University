@@ -12,7 +12,7 @@ export default function TasksList({ tasks }: TasksListProps) {
       style={{ width: "100%", marginTop: 16, paddingTop: 8 }}
       data={tasks}
       renderItem={({ item }) => <TaskCard task={item} />}
-      keyExtractor={(item) => item.taskId}
+      keyExtractor={(item) => item.taskId.toString()}
       showsVerticalScrollIndicator={false}
     />
   );

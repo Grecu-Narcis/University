@@ -3,7 +3,7 @@ import { TaskPriority } from "@/domain/TaskPriority";
 
 let demoTasks: Task[] = [
     {
-      taskId: "1",
+      taskId: 1,
       title: "Buy groceries",
       description: "Milk, Bread, Eggs, and Vegetables",
       dueDate: new Date("2025-11-01"),
@@ -11,7 +11,7 @@ let demoTasks: Task[] = [
       priority: TaskPriority.HIGH,
     },
     {
-      taskId: "2",
+      taskId: 2,
       title: "Finish project report",
       description: "Complete the annual project report and submit it to the manager",
       dueDate: new Date("2024-11-05"),
@@ -19,7 +19,7 @@ let demoTasks: Task[] = [
       priority: TaskPriority.MEDIUM,
     },
     {
-      taskId: "3",
+      taskId: 3,
       title: "Workout",
       description: "Complete 30-minute cardio session",
       dueDate: new Date("2025-10-30"),
@@ -27,7 +27,7 @@ let demoTasks: Task[] = [
       priority: TaskPriority.LOW,
     },
     {
-      taskId: "4",
+      taskId: 4,
       title: "Book doctor’s appointment",
       description: "Check knee injury",
       dueDate: new Date("2024-11-10"),
@@ -35,7 +35,7 @@ let demoTasks: Task[] = [
       priority: TaskPriority.MEDIUM,
     },
     {
-      taskId: "5",
+      taskId: 5,
       title: "Read a book",
       description: "Start reading 'Atomic Habits'",
       dueDate: new Date("2024-12-24"),
@@ -44,7 +44,7 @@ let demoTasks: Task[] = [
     },
 
     {
-      taskId: "6",
+      taskId: 6,
       title: "Organize office files",
       description: "Sort and label all office documents.",
       dueDate: new Date("2023-11-03"),
@@ -53,7 +53,7 @@ let demoTasks: Task[] = [
     },
 
     {
-      taskId: "7",
+      taskId: 7,
       title: "Prepare presentation",
       description: "Prepare slides for the upcoming team meeting.",
       dueDate: new Date("2023-11-04"),
@@ -62,7 +62,7 @@ let demoTasks: Task[] = [
     },
 
     {
-      taskId: "8",
+      taskId: 8,
       title: "Water plants",
       description: "Water all indoor and outdoor plants.",
       dueDate: new Date("2023-11-02"),
@@ -71,7 +71,7 @@ let demoTasks: Task[] = [
     },
 
     {
-      taskId: "9",
+      taskId: 9,
       title: "Plan weekend getaway",
       description: "Organize a short weekend trip with friends.",
       dueDate: new Date("2023-11-06"),
@@ -80,7 +80,7 @@ let demoTasks: Task[] = [
     },
 
     {
-      taskId: "10",
+      taskId: 10,
       title: "Update software",
       description: "Update all applications and operating system on the laptop.",
       dueDate: new Date("2023-11-08"),
@@ -89,7 +89,7 @@ let demoTasks: Task[] = [
     },
 
     {
-      taskId: "11",
+      taskId: 11,
       title: "Clean the garage",
       description: "Organize tools, boxes, and clear out unused items in the garage.",
       dueDate: new Date("2023-11-09"),
@@ -98,7 +98,7 @@ let demoTasks: Task[] = [
     },
 
     {
-      taskId: "12",
+      taskId: 12,
       title: "Prepare for client meeting",
       description: "Review client documents and create agenda for discussion.",
       dueDate: new Date("2023-11-10"),
@@ -107,7 +107,7 @@ let demoTasks: Task[] = [
     },
 
     {
-      taskId: "13",
+      taskId: 13,
       title: "Write blog post",
       description: "Draft and publish a new post on personal finance tips.",
       dueDate: new Date("2023-11-11"),
@@ -116,7 +116,7 @@ let demoTasks: Task[] = [
     },
 
     {
-      taskId: "14",
+      taskId: 14,
       title: "Send birthday card",
       description: "Write and send a birthday card to Sarah.",
       dueDate: new Date("2023-11-12"),
@@ -125,7 +125,7 @@ let demoTasks: Task[] = [
     },
     
     {
-      taskId: "15",
+      taskId: 15,
       title: "Research vacation destinations",
       description: "Explore and shortlist destinations for the winter vacation.",
       dueDate: new Date("2023-11-13"),

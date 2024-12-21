@@ -5,6 +5,7 @@ import { useNavigation } from "expo-router";
 import { useContext, useState } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
+import { showMessage } from "react-native-flash-message";
 
 import {
   Pressable,
@@ -19,11 +20,28 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { TaskPriority } from "@/domain/TaskPriority";
 import { Task } from "@/domain/Task";
 
-import uuid from "react-native-uuid";
-
 interface AddOrEditProps {
   task: Task | undefined;
 }
+
+const validate = (task: Task) => {
+  const errors: string[] = [];
+  if (task.title.length < 3) {
+    errors.push("Title must be at least 3 characters long");
+  }
+
+  if (task.description.length < 10)
+    errors.push("Description must be at least 10 characters long");
+
+  if (errors.length > 0)
+    Alert.alert("Invalid values!", errors.join("\n"), [
+      {
+        text: "Ok",
+      },
+    ]);
+
+  return errors.length > 0;
+};
 
 export default function AddOrEdit({ task }: AddOrEditProps) {
   const navigation = useNavigation();
@@ -39,31 +57,9 @@ export default function AddOrEdit({ task }: AddOrEditProps) {
     task ? task.priority : TaskPriority.LOW
   );
 
-  const validate = () => {
-    console.log(title.length);
-    const errors: string[] = [];
-    if (title.length < 3) {
-      errors.push("Title must be at least 3 characters long");
-    }
-
-    if (description.length < 10)
-      errors.push("Description must be at least 10 characters long");
-
-    if (errors.length > 0)
-      Alert.alert("Invalid values!", errors.join("\n"), [
-        {
-          text: "Ok",
-        },
-      ]);
-
-    return errors.length > 0;
-  };
-
   const onSave = () => {
-    if (validate()) return;
-
     const taskToAdd: Task = {
-      taskId: task ? task.taskId : uuid.v4(),
+      taskId: task ? task.taskId : 0,
       title: title,
       description: description,
       dueDate: date,
@@ -71,8 +67,23 @@ export default function AddOrEdit({ task }: AddOrEditProps) {
       priority: priority,
     };
 
-    task ? tasksContext.updateTask(taskToAdd) : tasksContext.addTask(taskToAdd);
-    navigation.goBack();
+    if (validate(taskToAdd)) return;
+
+    try {
+      task
+        ? tasksContext.updateTask(taskToAdd)
+        : tasksContext.addTask(taskToAdd);
+
+      navigation.goBack();
+    } catch (error) {
+      console.error("Error on add/update:", (error as Error).message);
+
+      showMessage({
+        message: (error as Error).message,
+        type: "warning",
+        duration: 2000,
+      });
+    }
   };
 
   return (
