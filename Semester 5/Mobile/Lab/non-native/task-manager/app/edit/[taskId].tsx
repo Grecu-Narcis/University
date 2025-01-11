@@ -7,7 +7,7 @@ export default function Edit() {
   const tasksContext = useContext(TaskContext)!;
   const { taskId } = useLocalSearchParams();
 
-  const task = tasksContext.getTask(taskId as string);
+  const task = tasksContext.getTask(parseInt(taskId as string));
 
   if (task === undefined) return;
 

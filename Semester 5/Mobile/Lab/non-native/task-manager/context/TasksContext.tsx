@@ -5,10 +5,18 @@ import * as SQLite from "expo-sqlite";
 import { getPriorityFromString } from "@/domain/TaskPriority";
 import {
   addTaskDb,
+  addToSyncQueue,
   deleteTaskDb,
+  syncPendingOperations,
   updateTaskDb,
 } from "@/repository/SQLRepository";
 import { showMessage } from "react-native-flash-message";
+import {
+  addTaskToServer,
+  deleteTaskFromServer,
+  getAllFromServer,
+  updateTaskOnServer,
+} from "@/repository/NetworkRepository";
 
 export type TaskContextProps = {
   tasks: Task[];
@@ -30,42 +38,64 @@ export default function TaskContextProvider({
   const [tasks, setTasks] = useState<Task[]>([]);
   const [dbConnection, setDbConnection] = useState<SQLite.SQLiteDatabase>();
 
-  const addTask = (task: Task) => {
-    addTaskDb(dbConnection!, task)
-      .then((result) => {
-        const insertedId = result.lastInsertRowId;
-        const newTask = { ...task, taskId: insertedId };
-
-        setTasks([...tasks, newTask]);
-      })
-      .catch((error) => {
-        throw new Error("Failed to save task!");
-      });
+  const addTask = async (task: Task) => {
+    try {
+      const insertedTask = await addTaskToServer(task);
+      await addTaskDb(dbConnection!, insertedTask!, insertedTask?.taskId);
+      setTasks([...tasks, insertedTask!]);
+    } catch (error) {
+      throw new Error("Failed to add task!");
+    }
   };
 
-  const updateTask = (taskToUpdate: Task) => {
-    // throw new Error("Test");
-    updateTaskDb(dbConnection!, taskToUpdate)
-      .then((result) =>
-        setTasks(
-          tasks.map((task) =>
-            task.taskId === taskToUpdate.taskId ? taskToUpdate : task
-          )
+  const updateTask = async (taskToUpdate: Task) => {
+    try {
+      await updateTaskDb(dbConnection!, taskToUpdate);
+
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.taskId === taskToUpdate.taskId ? taskToUpdate : task
         )
-      )
-      .catch((error) => {
-        throw new Error("Failed to update task!");
-      });
+      );
+
+      try {
+        await updateTaskOnServer(taskToUpdate);
+      } catch (serverError) {
+        console.log("Failed to update on server:", serverError);
+
+        await addToSyncQueue(
+          dbConnection!,
+          taskToUpdate.taskId,
+          "UPDATE",
+          JSON.stringify(taskToUpdate)
+        );
+      }
+    } catch (dbError) {
+      console.error("Failed to update task locally:", dbError);
+      throw new Error("Task update failed.");
+    }
   };
 
-  const deleteTask = (taskId: number) => {
-    deleteTaskDb(dbConnection!, taskId)
-      .then((result) =>
-        setTasks(tasks.filter((task) => task.taskId !== taskId))
-      )
-      .catch((error) => {
-        throw new Error("Failed to delete task!");
-      });
+  const deleteTask = async (taskId: number) => {
+    try {
+      await deleteTaskDb(dbConnection!, taskId);
+
+      setTasks((prevTasks) =>
+        prevTasks.filter((task) => task.taskId !== taskId)
+      );
+
+      try {
+        await deleteTaskFromServer(taskId);
+      } catch (serverError) {
+        console.error("Failed to delete on server:", serverError);
+
+        // Add to Sync Queue
+        await addToSyncQueue(dbConnection!, taskId, "DELETE", "");
+      }
+    } catch (dbError) {
+      console.error("Failed to delete task locally:", dbError);
+      throw new Error("Task deletion failed.");
+    }
   };
 
   const getTask = (taskId: number) => {
@@ -80,7 +110,14 @@ export default function TaskContextProvider({
     createTable(connection);
 
     try {
-      fetchTasks(connection);
+      console.log("start fetch tasks");
+      try {
+        fetchTasksFromServer();
+      } catch (error) {
+        console.log("fetch from server failed...");
+        console.log("fetching from local db");
+        fetchTasks(connection);
+      }
     } catch (error) {
       console.error(error);
 
@@ -90,9 +127,74 @@ export default function TaskContextProvider({
         duration: 2000,
       });
     }
+
+    const syncInterval = setInterval(() => {
+      syncPendingOperations(connection);
+    }, 1000); // Sync every 60 seconds
+
+    return () => clearInterval(syncInterval);
   }, []);
 
-  const createTable = (connection: SQLite.SQLiteDatabase) =>
+  // websocket
+  useEffect(() => {
+    const socket = new WebSocket("ws://192.168.1.136:3001");
+    socket.onopen = () => {
+      console.log("WebSocket connection established");
+    };
+
+    socket.onmessage = async (event) => {
+      const { type, payload } = JSON.parse(event.data);
+
+      if (type === "add") {
+        const taskToAdd = {
+          taskId: payload.id,
+          title: payload.title,
+          description: payload.description,
+          dueDate: new Date(payload.dueDate),
+          isCompleted: !!payload.isCompleted,
+          priority: payload.priority,
+        };
+
+        await addTaskDb(dbConnection!, taskToAdd, taskToAdd.taskId);
+
+        setTasks((prevTasks) => [...prevTasks, taskToAdd]);
+      } else if (type === "update") {
+        const updatedTask = {
+          taskId: payload.id,
+          title: payload.title,
+          description: payload.description,
+          dueDate: new Date(payload.dueDate),
+          isCompleted: !!payload.isCompleted,
+          priority: payload.priority,
+        };
+
+        await updateTaskDb(dbConnection!, payload);
+        setTasks((prevTasks) =>
+          prevTasks.map((task) =>
+            task.taskId == updatedTask.taskId ? updatedTask : task
+          )
+        );
+      } else if (type === "delete") {
+        setTasks((prevTasks) =>
+          prevTasks.filter((task) => task.taskId != payload.taskId)
+        );
+      }
+    };
+
+    socket.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
+
+    socket.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+
+    return () => {
+      socket.close();
+    };
+  }, []);
+
+  const createTable = (connection: SQLite.SQLiteDatabase) => {
     connection.execSync(
       "CREATE TABLE IF NOT EXISTS tasks(\
       id INTEGER PRIMARY KEY AUTOINCREMENT,\
@@ -102,6 +204,16 @@ export default function TaskContextProvider({
       isCompleted INTEGER not null,\
       priority TEXT not null);"
     );
+
+    connection.execSync(
+      `CREATE TABLE IF NOT EXISTS sync_queue (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        taskId INTEGER NOT NULL,
+        syncAction TEXT NOT NULL,
+        payload TEXT NOT NULL
+      );`
+    );
+  };
 
   const fetchTasks = async (connection: SQLite.SQLiteDatabase) => {
     const allTasks = await connection.getAllAsync("SELECT * FROM tasks");
@@ -128,6 +240,17 @@ export default function TaskContextProvider({
     }
 
     setTasks(tasks);
+  };
+
+  const fetchTasksFromServer = async () => {
+    let tasks = await getAllFromServer();
+    setTasks(tasks);
+
+    tasks.forEach((task: Task) => {
+      addTaskDb(dbConnection!, task, task.taskId);
+    });
+
+    console.log("fetched tasks from server!");
   };
 
   return (
