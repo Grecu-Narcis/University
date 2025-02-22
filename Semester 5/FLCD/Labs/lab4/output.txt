@@ -1,0 +1,76 @@
+-----------Symbol table----------
+HashMap(size=1009, buckets=
+Bucket: 97 -> LinkedList(size = 1, Node(value = a))
+Bucket: 98 -> LinkedList(size = 1, Node(value = b))
+Bucket: 99 -> LinkedList(size = 1, Node(value = c))
+Bucket: 714 -> LinkedList(size = 1, Node(value = 'max is:'))
+Bucket: 766 -> LinkedList(size = 1, Node(value = maximum))
+)
+
+-------PIF---------
++-----------+----------+
+|    Item   | Location |
++-----------+----------+
+|    int    |   None   |
+|     a     | (97, 0)  |
+|     ,     |   None   |
+|     b     | (98, 0)  |
+|     ,     |   None   |
+|     c     | (99, 0)  |
+|     ,     |   None   |
+|  maximum  | (766, 0) |
+|     ;     |   None   |
+|     a     | (97, 0)  |
+|     =     |   None   |
+|  readInt  |   None   |
+|     (     |   None   |
+|     )     |   None   |
+|     ;     |   None   |
+|     b     | (98, 0)  |
+|     =     |   None   |
+|  readInt  |   None   |
+|     (     |   None   |
+|     )     |   None   |
+|     ;     |   None   |
+|     c     | (99, 0)  |
+|     =     |   None   |
+|  readInt  |   None   |
+|     (     |   None   |
+|     )     |   None   |
+|     ;     |   None   |
+|  maximum  | (766, 0) |
+|     =     |   None   |
+|     a     | (97, 0)  |
+|     ;     |   None   |
+|     if    |   None   |
+|     (     |   None   |
+|     b     | (98, 0)  |
+|     >     |   None   |
+|  maximum  | (766, 0) |
+|     )     |   None   |
+|     {     |   None   |
+|  maximum  | (766, 0) |
+|     =     |   None   |
+|     b     | (98, 0)  |
+|     ;     |   None   |
+|     }     |   None   |
+|     if    |   None   |
+|     (     |   None   |
+|     c     | (99, 0)  |
+|     >     |   None   |
+|  maximum  | (766, 0) |
+|     )     |   None   |
+|     {     |   None   |
+|  maximum  | (766, 0) |
+|     =     |   None   |
+|     c     | (99, 0)  |
+|     ;     |   None   |
+|     }     |   None   |
+|   print   |   None   |
+|     (     |   None   |
+| 'max is:' | (714, 0) |
+|     +     |   None   |
+|  maximum  | (766, 0) |
+|     )     |   None   |
+|     ;     |   None   |
++-----------+----------+

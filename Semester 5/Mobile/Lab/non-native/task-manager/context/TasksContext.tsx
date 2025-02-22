@@ -6,6 +6,7 @@ import { getPriorityFromString } from "@/domain/TaskPriority";
 import {
   addTaskDb,
   addToSyncQueue,
+  clearLocalDb,
   deleteTaskDb,
   syncPendingOperations,
   updateTaskDb,
@@ -39,6 +40,8 @@ export default function TaskContextProvider({
   const [dbConnection, setDbConnection] = useState<SQLite.SQLiteDatabase>();
 
   const addTask = async (task: Task) => {
+    console.log("Adding task: " + JSON.stringify(task));
+
     try {
       const insertedTask = await addTaskToServer(task);
       await addTaskDb(dbConnection!, insertedTask!, insertedTask?.taskId);
@@ -49,6 +52,8 @@ export default function TaskContextProvider({
   };
 
   const updateTask = async (taskToUpdate: Task) => {
+    console.log("Updating task with id: " + taskToUpdate.taskId);
+
     try {
       await updateTaskDb(dbConnection!, taskToUpdate);
 
@@ -77,6 +82,8 @@ export default function TaskContextProvider({
   };
 
   const deleteTask = async (taskId: number) => {
+    console.log("Deleting task with id: " + taskId);
+
     try {
       await deleteTaskDb(dbConnection!, taskId);
 
@@ -86,6 +93,7 @@ export default function TaskContextProvider({
 
       try {
         await deleteTaskFromServer(taskId);
+        console.log("here");
       } catch (serverError) {
         console.error("Failed to delete on server:", serverError);
 
@@ -99,6 +107,7 @@ export default function TaskContextProvider({
   };
 
   const getTask = (taskId: number) => {
+    console.log("Reading task with id: " + taskId);
     const task = tasks.find((task) => taskId == task.taskId);
 
     return task;
@@ -109,24 +118,29 @@ export default function TaskContextProvider({
     setDbConnection(connection);
     createTable(connection);
 
-    try {
-      console.log("start fetch tasks");
+    async function loadTasks() {
       try {
-        fetchTasksFromServer();
+        console.log("start fetch tasks");
+        try {
+          await fetchTasksFromServer();
+          console.log("fetched worked");
+        } catch (error) {
+          console.log("fetch from server failed...");
+          console.log("fetching from local db");
+          await fetchTasks(connection);
+        }
       } catch (error) {
-        console.log("fetch from server failed...");
-        console.log("fetching from local db");
-        fetchTasks(connection);
-      }
-    } catch (error) {
-      console.error(error);
+        console.error(error);
 
-      showMessage({
-        message: "Failed to load tasks",
-        type: "warning",
-        duration: 2000,
-      });
+        showMessage({
+          message: "Failed to load tasks",
+          type: "warning",
+          duration: 2000,
+        });
+      }
     }
+
+    loadTasks();
 
     const syncInterval = setInterval(() => {
       syncPendingOperations(connection);
@@ -137,7 +151,7 @@ export default function TaskContextProvider({
 
   // websocket
   useEffect(() => {
-    const socket = new WebSocket("ws://192.168.1.136:3001");
+    const socket = new WebSocket("ws://172.20.10.2:3001");
     socket.onopen = () => {
       console.log("WebSocket connection established");
     };
@@ -245,6 +259,8 @@ export default function TaskContextProvider({
   const fetchTasksFromServer = async () => {
     let tasks = await getAllFromServer();
     setTasks(tasks);
+
+    await clearLocalDb(dbConnection!);
 
     tasks.forEach((task: Task) => {
       addTaskDb(dbConnection!, task, task.taskId);

@@ -1,0 +1,22 @@
+verify if a number is prime
+
+int number, count, i;
+count = 0;
+
+number = readInt();
+
+while (i <= number) {
+	if (number % i == 0) {
+ 		count++;
+	}
+
+	i = i + 1;
+}
+
+if (count == 2) {
+	print('prime');
+}
+
+else {
+	print('not prime');
+}

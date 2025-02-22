@@ -1,0 +1,18 @@
+program = {statement}
+statement = (var_statement|arr_statement|assign_statement|if_statement|while_statement|function_call_statement) ";"
+var_statement = "int" identifier_list
+identifier_list = identifier {"," identifier}
+identifier = letter{letter|digit}
+expression = int_expression
+
+int_expression = int_constant | identifier | 
+                   int_expression ("+"|"-"|"*"|"/") int_expression |
+                   "(" int_expression ("+"|"-"|"*"|"/") int_expression ")"
+
+expression_list = expression{"," expression}
+assign_statement = identifier "=" expression
+if_statement = "if" "(" condition ")" "{" {statement} "}" ["else" "{" {statement} "}"]
+condition = expression ("=="|"<"|"<="|">"|">=") expression
+while_statement = "while" "(" condition ")" "{" {statement} "}"
+function_call_statement = function_name "(" expression_list? ")"
+function_name = "print" | "readInt"

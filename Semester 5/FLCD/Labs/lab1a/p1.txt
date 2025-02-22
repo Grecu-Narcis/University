@@ -1,0 +1,18 @@
+compute the max of 3 numbers
+
+int a, b, c, maximum;
+readInt(a);
+readInt(b);
+readInt(c);
+
+maximum = a;
+
+if (b > maximum) {
+maximum = b;
+}
+
+if (c > maximum){
+maximum = c;
+}
+
+print('max is:' + maximum);

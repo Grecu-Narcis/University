@@ -1,0 +1,18 @@
+Alphabet:
+a-z
+A-Z
+0-9
+
+Lexic:
+operators: +, -, *, /, ==, <, <=, >, >=, =
+separators: {}, (), ;, space, newline, ", ',' 
+reserved words: int, if, print, readInt, else, while, setNth, getNth
+
+identifier = letter{letter|digit}
+letter = "A"|"B"|..|"Z"|"a"|"b"..|"z"
+digit = "0"|"1"|..|"9"
+
+integer = integer = "0" | [" + " | " - "] nonzerodigit { "0" | nonzerodigit } 
+nonzerodigit = "1"|"2"|..|"9"
+
+1b / 2d

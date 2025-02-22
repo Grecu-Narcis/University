@@ -1,0 +1,18 @@
+The FiniteAutomata class represents a finite automaton initialized from a configuration file. It reads and stores the automaton's states, alphabet, start state, final states, and transitions. The __init__() method initializes the automaton by parsing the file, while the __split_values() static method is used to parse semicolon-separated values from the file. The accepts_word() method checks if a given word is accepted by the automaton by simulating its transitions based on the input. Transitions between states are represented by Transition objects.
+
+non_zero_digit = 1|2| .. |9
+digit = 0|1|..|9
+number = non_zero_digit{digit}
+letter = a|b|..|z|A|B..|Z
+character = letter | digit
+state = character{number}
+
+firstLine = "states" "=" {state} {";" state} 
+secondLine = "alphabet" "=" {character} {";" character}
+thirdLine = "start" "=" {state}
+fourthLine = "final" "=" {state} {";" state}
+
+triple = "(" {character} "," {character} "," {character} ")"
+fifthLine = "transitions" "=" triple {";" triple}
+
+inputFile = firstLine "\n" secondLine "\n" thirdLine "\n" fourthLine "\n" fifthLine

@@ -26,6 +26,12 @@ export async function addTaskDb(dbConnection: SQLiteDatabase, task: Task, taskId
       )
 }
 
+export async function clearLocalDb(dbConnection: SQLiteDatabase) {
+  return dbConnection
+    ?.runAsync(
+      "DELETE FROM tasks")
+}
+
 export async function updateTaskDb(dbConnection: SQLiteDatabase, taskToUpdate: Task) {
     return dbConnection
       ?.runAsync(

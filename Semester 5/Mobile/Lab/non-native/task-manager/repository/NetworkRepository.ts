@@ -1,11 +1,18 @@
 import { Task } from "@/domain/Task";
 
-const BASE_API_URL = 'http://192.168.1.136:3000';
+const BASE_API_URL = 'http://172.20.10.2:3000';
 
 export async function getAllFromServer() {
     try {
-    const response = await fetch(BASE_API_URL + '/tasks');
+      const controller = new AbortController();
+      const timeout = 1000;
+      const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+      console.log("fetch from server begin")
+    const response = await fetch(BASE_API_URL + '/tasks', {signal: controller.signal});
     const tasks = await response.json();
+
+      clearTimeout(timeoutId);
 
     return tasks.map((task: any) => ({
         taskId: task.id,
@@ -18,6 +25,7 @@ export async function getAllFromServer() {
 
     }
     catch (error: any) {
+      console.log(error)
       throw new Error();
     }
 }
@@ -72,7 +80,15 @@ export async function updateTaskOnServer(task: Task) {
 
 export async function deleteTaskFromServer(taskId: number) {
     try {
-      await fetch(`${BASE_API_URL}/tasks/${taskId}`, { method: 'DELETE' });
+      const controller = new AbortController();
+      const timeout = 2000;
+      const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+      const response = await fetch(`${BASE_API_URL}/tasks/${taskId}`, { method: 'DELETE', signal: controller.signal });
+
+      if (!response.ok)
+        throw new Error();
+
       console.log(`Task ${taskId} deleted`);
     } catch (error) {
       console.error('Failed to delete task:', error);

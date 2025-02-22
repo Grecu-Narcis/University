@@ -1,0 +1,44 @@
+N =
+E = a b c d e f g h i j k l m n o p q r s t u v w x y z 0 1 2 3 4 5 6 7 8 9 " , ; + - * / % = == != < <= > >= { } int if else while print readInt epsilon
+S = Program
+P =
+Program -> Statement ; Program | epsilon
+Statement -> DeclarationStatement | AssignStatement | IfStatement | WhileStatement | FunctionCallStatement
+
+DeclarationStatement -> int IdentifierList
+IdentifierList -> Identifier | Identifier , IdentifierList
+
+MathOperator -> + | - | / | * | %
+
+AssignStatement -> Identifier = Expression
+
+Expression -> IntExpression
+IntExpression -> IntConstant | Identifier | IntExpression MathOperator IntExpression
+
+RelationalOperator -> == | < | <= | > | >=
+
+Condition -> Expression RelationalOperator Expression
+
+IfStatement -> if ( Condition ) { Program }
+IfStatement -> if ( Condition ) { Program } else { Program }
+WhileStatement -> while ( Condition ) { Program }
+
+FunctionCallStatement -> FunctionName ( ExpressionList )
+FunctionName -> print | readInt
+
+Letter -> a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z
+NonZeroDigit -> 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+Digit -> 0 | NonZeroDigit
+Character -> Letter | Digit
+
+InteriorOfStringConstant -> epsilon
+InteriorOfStringConstant -> Character InteriorOfStringConstant | Digit InteriorOfStringConstant
+
+Identifier -> Letter | Letter Identifier
+MaybeSign -> + | - | epsilon
+IntConstant -> MaybeSign PositiveNumber
+IntConstant -> 0
+PositiveNumber -> NonZeroDigit TheRestOfIntConstant
+TheRestOfIntConstant -> digit TheRestOfIntConstant | epsilon
+
+

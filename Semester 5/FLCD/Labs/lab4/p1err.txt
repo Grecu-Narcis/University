@@ -1,0 +1,15 @@
+int a, b, c, maximum;
+a = readInt();
+b = readInt();
+c = readInt();
+
+maximum = a1;
+
+if (b @ maximum) {
+ maximum = b;
+}
+if (c > maximum) {
+ maximum = c;
+}
+
+print('max is:' + maximum);
